@@ -1,0 +1,184 @@
+@use '../utilities/variables' as variable
+
+// Archivo que da estilo a la página de error
+
+// Estilo del contenedor que pone en buena posición al contenedor que
+// tiene los mensajes (no la mejor manera probablemente)
+.contenedorError
+  height: 50vh
+  display: flex
+  align-items: center
+  justify-content: center
+  text-align: center
+
+  // Estilo del contenedor del error 404
+  .contenedorError__mensaje
+    height: fit-content
+    max-height: 90%
+    min-width: 300px
+    max-width: 90%
+    border-radius: 10px
+    background-color: white
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: flex-start
+    box-shadow: 6px 6px 12px 1px
+    transition: 0.5s
+
+    // Estilo del titulo que se encuentra dentro del contenedor de error
+    // No confundir con titulo de la pagina
+    .contenedorError__mensaje--titulo
+      width: 90%
+      padding: 5px
+      margin:  10px 0 5px 0
+      background-color: variable.$boxes-color
+      border-radius: 10px
+      font-size: 50px
+      transition: 0.5s
+    
+
+    // Estilo del mensaje que da más información sobre el error
+    .contenedorError__mensaje--descripcion
+      max-width: 80%
+      padding: 5px
+      margin:  10px 0 10px 0
+      background-color: variable.$boxes-color
+      border-radius: 10px
+      font-size: 25px
+      transition: 0.5s
+
+      > p 
+        margin: 10px 0
+
+        > a 
+          text-decoration: underline
+        
+      
+    
+  
+
+  // Aqui es donde se realiza la animación  
+
+  // Estilo del gif de la chica alta
+  .contenedorError__gif1 
+    height: 30%
+    width: max-content
+    position: absolute
+    bottom: 0
+
+    animation: linear infinite
+    animation-name: andar
+    animation-duration: 20s
+  
+
+  // Estilo del gif de la chica baja
+  .contenedorError__gif2 
+    height: 20%
+    width: max-content
+    position: absolute
+    bottom: 0
+
+    animation: linear infinite
+    animation-name: andar2
+    animation-duration: 5s
+  
+
+  // Animación de la chica alta
+  @keyframes andar 
+    0% 
+      left: -35%
+      transform: scaleX(-1)
+    
+    49%
+      transform: scaleX(-1)
+    
+    50%
+      transform: scaleX(1)
+      left: 105%
+    
+    99%
+      transform: scaleX(1)
+    
+    100% 
+      transform: scaleX(-1)
+      left: -35%
+    
+  
+
+  // Animación de la chica baja
+  @keyframes andar2 
+    0% 
+      left: -35%
+      transform: scaleX(-1)
+    
+    49%
+      transform: scaleX(-1)
+    
+    50%
+      transform: scaleX(1)
+      left: 105%
+    
+    99%
+      transform: scaleX(1)
+    
+    100% 
+      transform: scaleX(-1)
+      left: -35%
+    
+  
+
+
+// -------------------------
+// Zona de media queries
+
+@media only screen and (max-width: 680px)
+  .contenedorError
+    .contenedorError__mensaje
+      .contenedorError__mensaje--titulo
+        margin: 10px 0 5px 0
+        font-size: 30px
+      
+      .contenedorError__mensaje--descripcion
+        padding: 5px
+        margin: 10px 0 5px 0
+        background-color: variable.$boxes-color
+        border-radius: 10px
+        font-size: 20px
+  
+        > p 
+          margin: 10px 0
+  
+          > a 
+            text-decoration: underline
+          
+        
+      
+    
+  
+
+
+@media only screen and (max-width: 400px)
+  .contenedorError
+    .contenedorError__mensaje
+      .contenedorError__mensaje--titulo
+        margin: 10px 0 5px 0
+        font-size: 25px
+      
+      .contenedorError__mensaje--descripcion
+        padding: 5px
+        margin: 10px 0 5px 0
+        background-color: variable.$boxes-color
+        border-radius: 10px
+        font-size: 15px
+  
+        > p 
+          margin: 10px 0
+  
+          > a 
+            text-decoration: underline
+          
+        
+      
+    
+  

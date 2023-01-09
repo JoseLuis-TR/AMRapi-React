@@ -1,0 +1,78 @@
+//@use '../../variables' as variable
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0')
+
+// Archivo que da estilo al header que se encuentra presente en todas las
+// paginas de la web
+
+// Estilo del contenedor
+.header
+  font-family: 'Urbanist'
+  position: sticky
+  top: 0
+  display: grid
+  grid-template-columns: 0.5fr 2fr 0.5fr
+  grid-template-rows: 1fr
+  grid-template-areas: "menu titulo logo"
+  height: 160px
+  width: 100%
+  z-index: 2
+  overflow-x: hidden
+  background: rgb(204,251,249)
+  background: linear-gradient(180deg, rgba(204,251,249,1) 85%, rgba(0,212,255,0) 100%)
+
+  // Estilo del titulo de la página en la que nos encontramos
+  .header__titulo
+    grid-area: titulo
+    font-weight: bold
+    font-size: 4.5vw
+    text-align: center
+    margin: auto
+    transition: 0.5s
+
+  // Estilo del logo
+  .header__logo
+    display: flex
+    margin: auto
+    grid-area: logo
+
+    .header__logo--imagen
+      width: 120px
+      transition: 0.5s
+
+  // Estilo del menu
+  .header__menu
+    grid-area: menu
+    margin: auto
+    font-size: 60px
+    transition: 0.5s
+
+@media only screen and (max-width: 660px)
+  .header
+    .header__menu
+      font-size: 40px
+
+    .header__logo
+      .header__logo--imagen
+        width: 100px
+      
+    
+  
+
+
+@media only screen and (max-width: 470px)
+  .header
+    .header__logo
+      .header__logo--imagen
+        width: 70px
+      
+    
+  
+
+
+@media only screen and (max-width: 350px)
+  .header
+    .header__titulo
+      font-size: 15px
+
+    
+  
