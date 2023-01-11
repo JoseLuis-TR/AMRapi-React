@@ -1,0 +1,66 @@
+@use '../utilities/_variables' as variable
+
+// En este archivo nos encargamos de dar estilo a las cajas que muestran el poster de las series y sus nombres
+// cuando las buscamos o las vemos desde la lista de guardados
+
+// Damos forma al contenedor
+.resultados__caja 
+  position: relative
+  width: 260px
+  margin: 20px
+  border-radius: 10px
+  flex: 30%
+  display: flex
+  justify-content: center
+  transition: 0.5s
+
+  // Damos forma a la imagen
+  .resultados__caja--imagen 
+    width: 260px
+    border-radius: 10px
+    margin: auto
+    transition: 0.5s
+    box-shadow: variable.$shadow-contenedor
+  
+
+  // Damos forma al gradiente negro que aparece en la parte inferior del contenedor
+  .resultados__caja--cuadroTexto 
+    width: 260px
+    height: 100px
+    position: absolute
+    bottom: 0
+    border-radius: 10px
+    background: rgb(0, 0, 0)
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 15%, rgba(255, 255, 255, 0) 100%)
+    transition: 0.5s
+  
+
+  // Damos forma al texto que indica el nombre de la serie
+  .resultados__caja--nombreSerie 
+    color: white
+    position: absolute
+    bottom: 0
+    padding-left: 10px
+    padding-bottom: 15px
+    font-size: 20px
+    font-weight: 500
+    transition: 0.5s
+  
+
+
+// -------------------------
+// Zona de media queries
+
+@media only screen and (max-width: 350px)
+  .resultados__caja
+    width: 200px
+    .resultados__caja--imagen
+      width: 200px
+    
+    .resultados__caja--cuadroTexto
+      width: 200px
+    
+    .resultados__caja--nombreSerie
+      font-size: 15px
+    
+  
