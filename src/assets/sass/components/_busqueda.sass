@@ -12,69 +12,77 @@
     align-items: center
     width: 90%
 
-    // Se encarga de darle estilo al boton rosa que funciona como submit en la parte inferior
-    .centro__inputBusqueda
-        height: 40px
-        width: 170px
-        transition: 0.5s
-        background-color: variable.$button-color
-        border-radius: 50px
-        margin-bottom: 10px
-        font-size: 25px
-        color:white
-        font-weight: 500
-        display: flex
-        align-items: center
-        justify-content: center
-        box-shadow: variable.$shadow-input
-        align-self: flex-end
-        &:hover
-            background-color: variable.$button-color-darker
-        
-    
-
 
 // Se encarga de colocar en posición los distintos select puestos en pantalla
 .centro__busqueda 
-    display: flex
-    justify-content: space-evenly
-    flex-wrap: wrap
+    display: grid 
+    grid-template-columns: 1fr 
+    grid-template-rows: 1fr auto 
+    gap: 0px 0px 
+    grid-template-areas: "dropdowns" "button" 
     margin-top: 0px
     max-width: 100%
     margin-bottom: 20px
-    
 
-    // Se le da estilo a los elementos select y label como un único componente
-    .centro__busqueda--opcion 
-        border: 0
+    .dropdowns
+        grid-area: dropdowns
         display: flex
-        flex-flow: column
-        align-items: center
-        width: 260px
-        margin-left: 10px
-        margin-right: 10px
-
-        label 
-            font-size: 35px
-            font-weight: 600
-            text-align: center
-            display: block
-            margin-top: 3%
-            margin-bottom: 5%
-            transition: 0.5s
-        
-
-        select 
-            background-color: variable.$boxes-color
-            font-size: 20px
+        justify-content: center
+        flex-wrap: wrap
+        // Se le da estilo a los elementos select y label como un único componente
+        .centro__busqueda--opcion 
+            border: 0
+            display: flex
+            flex-flow: column
+            align-items: center
             width: 260px
+            margin-left: 10px
+            margin-right: 10px
+
+            label 
+                font-size: 35px
+                font-weight: 600
+                text-align: center
+                display: block
+                margin-top: 3%
+                margin-bottom: 5%
+                transition: 0.5s
+            
+            select 
+                background-color: variable.$boxes-color
+                font-size: 20px
+                width: 260px
+                height: 40px
+                border:none
+                border-radius: 10px
+                padding-left: 15px
+                transition: 0.5s
+                cursor: pointer
+                box-shadow: variable.$shadow-input
+
+    .button
+        grid-area: button
+        display: flex
+        justify-content: center
+        padding-top: 5% 
+        // Se encarga de darle estilo al boton rosa que funciona como submit en la parte inferior
+        .centro__inputBusqueda
             height: 40px
-            border:none
-            border-radius: 10px
-            padding-left: 15px
+            width: 170px
             transition: 0.5s
-            cursor: pointer
+            background-color: variable.$button-color
+            border-radius: 50px
+            margin-bottom: 10px
+            font-size: 25px
+            color:white
+            font-weight: 500
+            display: flex
+            align-items: center
+            justify-content: center
             box-shadow: variable.$shadow-input
+            align-self: flex-end
+            &:hover
+                background-color: variable.$button-color-darker
         
     
 
@@ -84,34 +92,28 @@
 
 @media only screen and (max-width: 550px)
     .centro__busqueda
-        .centro__busqueda--opcion
-            
-            label
-                font-size: 25
-            
-        
-    
-
+        .dropdowns
+            .centro__busqueda--opcion   
+                label
+                    font-size: 25px
 
 @media only screen and (max-width: 350px)
-    .centro
-        .centro__inputBusqueda
-            height: 30px
-            width: 130px
-            margin-bottom: 15px
-            font-size: 20px
-        
-    
-
     .centro__busqueda
-        .centro__busqueda--opcion
-            label
-                font-size: 15
-            
-            select
-                font-size: 15px
+        .button
+            .centro__inputBusqueda
                 height: 30px
-                width: 200px
+                width: 130px
+                margin-bottom: 15px
+                font-size: 20px
+        .dropdowns
+            .centro__busqueda--opcion
+                label
+                    font-size: 15px
+                
+                select
+                    font-size: 15px
+                    height: 30px
+                    width: 200px
             
         
     

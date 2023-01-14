@@ -11,6 +11,7 @@
     "react-helmet": "^6.1.0",
     "react-router-dom": "^6.6.1",
     "react-scripts": "^5.0.1",
+    "remove-accents": "^0.4.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

@@ -1,0 +1,307 @@
+@use '../utilities/_variables' as variable
+
+// Se encarga de dar estilo al contenedor y todos los elementos del producto cuando una serie
+// es seleccionada
+
+.contenedorCentro
+
+  // Damos estilo al contenedor que acoge todos los elementos que queremos
+  // mostrar de la serie
+  .contenedorSerie
+    width: 80%
+    min-width: 330px
+    height: 650px
+    background: white
+    border-radius: 10px
+    display: grid 
+    grid-template-columns: auto 1fr 
+    grid-template-rows: auto auto 1fr auto 
+    gap: 0px 0px 
+    grid-template-areas: "imagen info" "imagen sinopsis" "imagen extra" "imagen footer"
+    transition: 0.5s
+    box-shadow: variable.$shadow-contenedor
+
+    // Estilo al contenedor que contiene el poster
+    &__poster
+      grid-area: imagen
+      height: 650px
+      width: 460px
+      transition: 0.5s
+      &--imagen
+        height: 100%
+        border-radius: 10px 0 0 10px
+      
+    
+
+    // Estilo al contenedor que tiene el titulo de la serie, cuantos capitulos
+    // tiene y año de estreno
+    &__info
+      grid-area: info
+      height: 120px
+      max-height: 150px
+      display: flex
+      flex-direction: column
+      justify-content: flex-start
+      padding: 20px 35px 0
+      overflow: hidden
+      white-space: nowrap
+      &--titulo
+        font-size: 30px
+        white-space: nowrap
+        overflow: hidden
+        text-overflow: ellipsis
+        display: block
+        transition: 0.5s
+      
+      &--basico
+        margin: auto 0 5px
+        &--texto
+          font-size: 20px
+          transition: 0.5s
+        
+      
+    
+
+    // Da estilo al contenedor que lleva dentro la sinopsis de la serie que ha sido escogida
+    &__sinopsis
+      grid-area: sinopsis
+      height: 350px
+      background: variable.$boxes-producto
+      border-radius: 10px
+      padding: 10px
+      overflow-x: auto
+      margin: 10px 35px 0
+      transition: 0.5s
+      &--texto
+        font-size: 20px
+        transition: 0.5s
+      
+    
+
+    // Da estilo a la información referente a la propia api sobre la serie, donde nos encontramos
+    // la nota media y una imagen representativa de la misma además de un boton enlace a la web de
+    // la api
+    &__extra
+      grid-area: extra
+      display: flex
+      justify-content: center
+      align-items: center
+      gap: 5%
+      padding: 0 5%px
+      transition: 0.5s
+      &--nota
+        display: flex
+        align-items: center
+        gap: 10%
+        &--imagen
+          width: 36px
+          transition: 0.5s
+        
+        &--texto
+          font-size: 30px
+          transition: 0.5s
+        
+      
+      &--linkAnilist
+        background-color: #1E2630
+        width: 200px
+        max-width: 200px
+        height: 50px
+        border-radius: 10px
+        display: flex
+        align-items: center
+        justify-content: center
+        box-shadow: variable.$shadow-input
+        &--imagen
+          width: 40px
+        
+        &--texto
+          color: white
+          font-size: 25px
+          font-weight: 700
+        
+      
+    
+
+
+  // Estilo del footer del contenedor que acoge la información sobre los generos de la serie
+  // además del boton para añadir o eliminar de la lista el producto
+    &__footer
+      grid-area: footer
+      width: 100%
+      height: 65px
+      margin-top: auto
+      background: variable.$boxes-producto
+      border-radius: 0 0 10px 0
+      display: flex
+      justify-content: space-between
+      &--generos
+        margin-left: 35px
+        width: 30%
+        display: flex
+        align-items: center
+        gap: 10%
+        &--texto
+          height: 35px
+          width: fit-content
+          padding: 15px
+          font-size: 20px
+          background: #eb4b4b
+          border-radius: 20px
+          display: flex
+          align-items: center
+          justify-content: center
+        
+      
+
+      // Codigo que se encarga del boton de añadir serie a la lista
+      .contenedorSerie__footer--checkbox
+        display: flex
+        align-items: center
+        margin-right: 35px
+        .contenedorSerie__footer--checkbox--check
+          width: 0
+          height: 0
+          visibility: hidden
+        
+        .contenedorSerie__footer--checkbox--label
+          display: block
+          width: 40px
+          height: 40px
+          background-color: variable.$button-color
+          border-radius: 50px
+          position: relative
+          cursor: pointer
+          box-shadow: variable.$shadow-input
+        
+        .contenedorSerie__footer--checkbox--label::after
+          content: ""
+          width: 40px
+          height: 40px
+          background-image: url("/src/assets/images/plus.png")
+          background-repeat: no-repeat
+          background-position: center
+          background-size: 40px auto
+          position: absolute
+        
+
+        .contenedorSerie__footer--checkbox--check:checked + .contenedorSerie__footer--checkbox--label::after
+          background-image: url("/src/assets/images/tick.png")
+        
+      
+    
+  
+
+
+// -------------------------
+// Zona de media queries
+
+@media only screen and (max-width: 1000px)
+  .contenedorCentro
+    .contenedorSerie
+      height: fit-content
+      display: grid 
+      grid-template-columns: auto 1fr 
+      grid-template-rows: auto auto 1fr auto 
+      grid-template-areas: "imagen info" "imagen extra" "sinopsis sinopsis" "footer footer"
+      &__poster
+        grid-area: imagen
+        height: 250px
+        width: 180px
+        margin: 20px 0 0 35px
+        &--imagen
+          border-radius: 10px
+        
+      
+
+      &__info
+        grid-area: info
+      
+
+      &__sinopsis
+        grid-area: sinopsis
+        height: 250px
+        margin-bottom: 10px
+      
+
+      &__extra
+        grid-area: extra
+      
+
+      &__footer
+        grid-area: footer
+        border-radius: 0 0 10px 10px
+      
+    
+  
+
+
+@media only screen and (max-width: 730px)
+  .contenedorCentro
+    .contenedorSerie
+      &__info
+        padding-left: 5px
+      
+  
+      &__extra
+        display: flex
+        flex-direction: column
+        margin-right: 35px
+        &--linkAnilist
+          width: fit-content
+          padding: 10px 15px
+          &--texto
+            display: none
+          
+        
+      
+    
+  
+
+
+
+@media only screen and (max-width: 550px)
+  .contenedorCentro
+    .contenedorSerie
+      &__poster
+        width: 175px
+        &--imagen
+          width: 100%
+          height: auto
+        
+      
+  
+      &__info
+        &--titulo
+          font-size: 20px
+        
+        &--basico
+          margin-top: 10px
+          &--texto
+            font-size: 15px
+          
+        
+      
+  
+      &__sinopsis
+        &--texto
+          font-size: 17px
+        
+      
+  
+      &__extra
+        &--nota
+          &--imagen
+            width: 30px
+          
+          &--texto
+            font-size: 20px
+          
+        
+        &--linkAnilist
+          margin-bottom: 20px
+        
+      
+    
+  
+
