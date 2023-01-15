@@ -5,7 +5,7 @@ import ResultBox from "./resultBox";
 import { Helmet } from "react-helmet";
 import { useLocation } from "react-router-dom";
 
-function Results() {
+function SavedList() {
     let accents = require('remove-accents');
     const formRef = useRef();
     const state = useLocation();
@@ -16,6 +16,8 @@ function Results() {
     const opcionesEstado = {releasing:'En publicación', finished:'Finalizado'};
     const opcionesTipo = {anime:'Anime', manga:'Manga'};
     const listaOpciones = {"Género":opcionesGenero, "Década":opcionesDecada, "Nota Media":opcionesMedia, "Estado":opcionesEstado, "Tipo":opcionesTipo};
+    const savedData = localStorage.getItem("mediaSaved").split(",");
+    const savedProducts = [];
     const [dataReceived, setDataReceived] = useState([]);
     const [genre, setGenre] = useState("");
     const [age, setAge] = useState("");
@@ -23,20 +25,9 @@ function Results() {
     const [status, setStatus] = useState("");
     const [type, setType] = useState("");
 
-    const handleSearch = (event) => {
-        event.preventDefault();
-        const formData = new FormData(formRef.current);
-        const valuesSearch = Object.fromEntries(formData)
-        let optionsToStorage = `${valuesSearch["genero"]},${valuesSearch["decada"]}, ${valuesSearch["notamedia"]},${valuesSearch["estado"]},${valuesSearch["tipo"]}`;
-        optionsToStorage.replace(/\\/g, '')
-        localStorage.setItem("searchResult",`${valuesSearch["genero"]},${valuesSearch["decada"]}, ${valuesSearch["notamedia"]},${valuesSearch["estado"]},${valuesSearch["tipo"]}`)
-        console.log(valuesSearch["genero"]);
-        fetchData(valuesSearch["genero"],valuesSearch["decada"],valuesSearch["notamedia"],valuesSearch["estado"],valuesSearch["tipo"])
-    }
-
-    async function fetchData(genre, decade, avgScore, status, type){
+    async function prepareQuery(id){
         let query = `
-        query ($page: Int, $perPage: Int, $genre: String, $ageless: FuzzyDateInt, $agemore: FuzzyDateInt, $score: Int, $status: MediaStatus, $type: MediaType) {
+        query ($page: Int, $perPage: Int, $id: Int) {
             Page (page: $page, perPage: $perPage) {
                 pageInfo {
                     total
@@ -45,7 +36,7 @@ function Results() {
                     hasNextPage
                     perPage
                 }
-                media (isAdult: false, genre_in: [$genre], startDate_greater:$ageless, startDate_lesser:$agemore, averageScore_lesser: $score, status:$status, type:$type, sort:SCORE_DESC, countryOfOrigin:JP) {
+                media (id: $id) {
                     id
                     coverImage{
                         extraLarge
@@ -60,13 +51,8 @@ function Results() {
         `;
         let variables = {
             page: 1,
-            perPage: 30,
-            genre: genre,
-            ageless: `${decade}0000`,
-            agemore: `${parseInt(decade)+10}0000`,
-            score: avgScore,
-            status: status.toUpperCase(),
-            type: type.toUpperCase(),
+            perPage: 10,
+            id: id
         };
 
         console.log(variables)
@@ -84,18 +70,19 @@ function Results() {
             })
         };
 
-        await fetch(url, options).then(handleResponse)
-                        .then(handleData)
-                        .catch(handleError);
+        return [url,options];
     }
 
     function handleResponse(response) {
-        return response.json().then(async function (json) {
+        console.log(response)
+        return response.json().then(function (json) {
+            console.log(json);
             return response.ok ? json : Promise.reject(json);
         });
     }
 
     function handleData(data) {
+        console.log(data);
         let resultados
         Object.entries(data).forEach(([label,values])=>{
             resultados = values.Page.media;
@@ -113,9 +100,34 @@ function Results() {
         console.error(error);
     }
 
+    async function printFavs(){
+        for(let i=0; i < savedData.length; i++){
+            console.log(savedData[i]);
+            let query = prepareQuery(savedData[i]);
+            const fetchData = async () => {
+                await fetch(query[0], query[1]).then(handleResponse)
+                                                .then(handleData)
+                                                .catch(handleError);
+            }
+            fetchData();
+            console.log(dataReceived);
+        }
+    }
+
     useEffect(() =>{
-        fetchData(valuesIndex["genero"],valuesIndex["decada"], valuesIndex["notamedia"],valuesIndex["estado"],valuesIndex["tipo"]);
-    }, [valuesIndex]);
+        for(let i=0; i < savedData.length; i++){
+            console.log(savedData[i]);
+            let query = prepareQuery(savedData[i]);
+            console.log(query);
+            const fetchData = async () => {
+                await fetch(query[0], query[1]).then(handleResponse)
+                                                .then(handleData)
+                                                .catch(handleError);
+            }
+            fetchData();
+            console.log(dataReceived);
+        }
+    }, []);
 
     return (
         <>
@@ -127,7 +139,7 @@ function Results() {
             />
             <main className="contenedorCentro">
             <article className="centro">
-                <form className="centro__busqueda busqueda__inicio" onSubmit={handleSearch} ref={formRef}>
+                <form className="centro__busqueda busqueda__inicio" ref={formRef}>
                     <section className="dropdowns">
                         {
                             Object.entries(listaOpciones).map((value,key) => 
@@ -141,24 +153,14 @@ function Results() {
                         }
                     </section>
                     <section className="button">
-                        <button  className="centro__inputBusqueda" onClick={handleSearch}>Buscar</button>
+                        <button  className="centro__inputBusqueda" >Buscar</button>
                     </section>
                 </form>
             </article>
             {
                 dataReceived ?
                 <article class="resultados">
-                {
-                    Object.entries(dataReceived).map((value, key) =>
-                        <ResultBox 
-                            key = {key}
-                            id = {value[1]["id"]}
-                            titulo = {value[1]["title"]["romaji"]}
-                            imagen = {value[1]["coverImage"]["extraLarge"]}
-                            status = {value[1]["status"]}
-                        />
-                    )
-                }
+                <p>D:</p>
                 </article>
                 :
                 <p>:D</p>
@@ -167,4 +169,4 @@ function Results() {
         </>
     )
 }
-export default Results;
+export default SavedList;

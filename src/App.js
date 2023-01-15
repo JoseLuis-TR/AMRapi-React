@@ -4,6 +4,7 @@ import Index from './components/index';
 import Error404 from "./components/404";
 import Results from "./components/searchResults";
 import ProductDetails from "./components/productDetails";
+import SavedList from "./components/savedList";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route exact path="/" element={<Index />} />
         <Route path="/results" element={<Results />} />
         <Route path="/product" element={<ProductDetails />}/>
+        <Route path="/savedlist" element={<SavedList />}/>
         <Route path='*' element={<Error404 />}/>
       </Routes>
     </Router>

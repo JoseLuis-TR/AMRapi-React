@@ -2,22 +2,19 @@ import React, {useRef, useState, useEffect} from "react";
 import Header from './header';
 import { Helmet } from "react-helmet";
 import { useLocation } from "react-router-dom";
+import Smiley from "./smiley";
+import Status from "./status";
+import Genres from "./genres";
 
 function ProductDetails(props) {
-    const location = useLocation()
-    let link = "";
+    const location = useLocation();
     const PRODUCT_ID = location.state["id"];
-    let accents = require('remove-accents');
-    const formRef = useRef();
-    const [genre, setGenre] = useState("indefinido");
-    const [age, setAge] = useState("indefinido");
-    const [avgScore, setAvgScore] = useState("indefinido");
-    const [status, setStatus] = useState("indefinido");
-    const [type, setType] = useState("indefinido");
-    const [apiData, setApiData] = useState({undefined:undefined});
-    const [isLoaded, setLoaded] = useState(false);
+    //window.localStorage.setItem('mediaSaved',"")
+    const [apiData, setApiData] = useState({});
+    const [isChecked, setCheck] = useState(false);
+    console.log(isChecked)
 
-    async function fetchData(id){
+    function prepareQuery(id){
         let query = `
         query ($id:Int,$page: Int, $perPage: Int) {
             Page (page: $page, perPage: $perPage) {
@@ -44,6 +41,8 @@ function ProductDetails(props) {
                     chapters
                     description
                     averageScore
+                    genres
+                    status
                 }
             }
         }
@@ -70,26 +69,25 @@ function ProductDetails(props) {
             })
         };
 
-        await fetch(url, options).then(handleResponse)
-                        .then(handleData)
-                        .catch(handleError);
+        return [url, options]
     }
 
     function handleResponse(response) {
         console.log(response);
         return response.json().then(function (json) {
+            console.log(json);
             return response.ok ? json : Promise.reject(json);
         });
     }
 
     function handleData(data) {
-        setApiData(data);
-        let resultados
+        console.log(data);
+        let resultados;
         Object.entries(data).forEach(([label,values])=>{
             resultados = values.Page.media[0];
-            //setApiData(resultados)
-            console.log(apiData)
+            console.log(resultados)
         })
+        setApiData(resultados);
     }
 
     function handleError(error) {
@@ -97,20 +95,56 @@ function ProductDetails(props) {
         console.error(error);
     }
 
-    useEffect( () =>{
-        console.log(isLoaded)
-        fetchData(PRODUCT_ID);
-        setLoaded(true)
-        console.log(isLoaded)
-    }, );
-    if(isLoaded){
+    useEffect(() => {
+        let query = prepareQuery(PRODUCT_ID);
+        const fetchData = async () => {
+            await fetch(query[0], query[1]).then(handleResponse)
+                                            .then(handleData)
+                                            .catch(handleError);
+        }
+        fetchData();
+        if(localStorage.getItem("mediaSaved") !== null){
+            let mediaList = localStorage.getItem("mediaSaved").split(",");
+            console.log(mediaList)
+            if(mediaList.includes(PRODUCT_ID)){
+                setCheck(!isChecked);
+            }
+        }
+    }, [])
+
+    function handleSaveCheck(){
+        let mediaList = [];
+        console.log(PRODUCT_ID)
+        if(localStorage.getItem("mediaSaved")){
+            mediaList = localStorage.getItem("mediaSaved").split(",")
+            if(mediaList.includes(PRODUCT_ID.toString())){
+                let index = mediaList.indexOf(PRODUCT_ID);
+                mediaList.splice(index,1)
+                setCheck(!isChecked);
+                console.log(mediaList)
+                localStorage.setItem("mediaSaved", mediaList)
+            } else {
+                mediaList.push(PRODUCT_ID)
+                setCheck(!isChecked);
+                console.log(mediaList)
+                localStorage.setItem("mediaSaved", mediaList)
+            }
+            console.log(isChecked);
+        } else {
+            mediaList.push(PRODUCT_ID)
+            console.log(mediaList)
+            localStorage.setItem("mediaSaved", mediaList)
+        }
+    }
+
+    if(Object.keys(apiData).length > 0){
         return (
             <>
                 <Helmet>
                     <title>{`AMR - ${apiData["title"]["romaji"]}`}</title>
                 </Helmet>
                 <Header 
-                    titulo={apiData["title"]["romaji"]}
+                    titulo={""}
                 />
                 <main class="contenedorCentro">
                     <article class="contenedorSerie">
@@ -123,31 +157,35 @@ function ProductDetails(props) {
                             <h2 class="contenedorSerie__info--titulo">{apiData["title"]["romaji"]}</h2>
                             <div class="contenedorSerie__info--basico">
                                 <p class="contenedorSerie__info--basico--texto">{apiData["startDate"]["year"]}</p>
-                                <p class="contenedorSerie__info--basico--texto">{apiData["episodes"]} capitulos</p>
+                                <Status 
+                                    status={apiData["status"]}
+                                    episodes={apiData["episodes"]+apiData["chapters"]}
+                                />
                             </div>
                         </section>
                         <section class="contenedorSerie__sinopsis">
                             <p class="contenedorSerie__sinopsis--texto">
-                                {apiData["description"]}
+                                {apiData["description"].split("<br>").join("\n")}
                             </p>
                         </section>
                         <section class="contenedorSerie__extra">
                             <div class="contenedorSerie__extra--nota">
-                                <img src="/src/assets/images/smile.png" alt="Smile" class="contenedorSerie__extra--nota--imagen"/>
-                                <p class="contenedorSerie__extra--nota--texto">90%</p>
+                                <Smiley 
+                                    nota={apiData["averageScore"]}
+                                />
+                                <p class="contenedorSerie__extra--nota--texto">{apiData["averageScore"]}%</p>
                             </div>
-                            <a class="contenedorSerie__extra--linkAnilist" href={`https://anilist.com/${apiData["type"]}/${apiData["id"]}/${apiData["title"]["romaji"].replace(" ","-")}/`}>
-                                <img src="/src/assets/images/anilist.png" alt="Logo de Anilist" class="contenedorSerie__extra--linkAnilist--imagen"/>
+                            <a target="_blank" rel="noopener noreferrer" class="contenedorSerie__extra--linkAnilist" href={`https://anilist.com/${apiData["type"]}/${apiData["id"]}/${apiData["title"]["romaji"].replace(" ","-")}/`}>
+                                <img src={require("../assets/images/anilist.png")} alt="Logo de Anilist" class="contenedorSerie__extra--linkAnilist--imagen"/>
                                 <p class="contenedorSerie__extra--linkAnilist--texto">Ver + info</p>
                             </a>
                         </section>
                         <footer class="contenedorSerie__footer">
-                            <section class="contenedorSerie__footer--generos">
-                                <p class="contenedorSerie__footer--generos--texto">acción</p>
-                                <p class="contenedorSerie__footer--generos--texto">drama</p>
-                            </section>
+                            <Genres 
+                                genres={apiData["genres"]}
+                            />
                             <section class="contenedorSerie__footer--checkbox">
-                                <input id="check-prod" type="checkbox" class="contenedorSerie__footer--checkbox--check"/>
+                                <input id="check-prod" type="checkbox" class="contenedorSerie__footer--checkbox--check" onChange={handleSaveCheck} defaultChecked={isChecked}/>
                                 <label for="check-prod" class="contenedorSerie__footer--checkbox--label"></label>
                             </section>
                         </footer>

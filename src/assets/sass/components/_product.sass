@@ -31,8 +31,6 @@
         height: 100%
         border-radius: 10px 0 0 10px
       
-    
-
     // Estilo al contenedor que tiene el titulo de la serie, cuantos capitulos
     // tiene y año de estreno
     &__info
@@ -58,9 +56,6 @@
         &--texto
           font-size: 20px
           transition: 0.5s
-        
-      
-    
 
     // Da estilo al contenedor que lleva dentro la sinopsis de la serie que ha sido escogida
     &__sinopsis
@@ -76,8 +71,6 @@
         font-size: 20px
         transition: 0.5s
       
-    
-
     // Da estilo a la información referente a la propia api sobre la serie, donde nos encontramos
     // la nota media y una imagen representativa de la misma además de un boton enlace a la web de
     // la api
@@ -124,8 +117,8 @@
     
 
 
-  // Estilo del footer del contenedor que acoge la información sobre los generos de la serie
-  // además del boton para añadir o eliminar de la lista el producto
+    // Estilo del footer del contenedor que acoge la información sobre los generos de la serie
+    // además del boton para añadir o eliminar de la lista el producto
     &__footer
       grid-area: footer
       width: 100%
@@ -178,7 +171,7 @@
           content: ""
           width: 40px
           height: 40px
-          background-image: url("/src/assets/images/plus.png")
+          background-image: url("../../images/plus.png")
           background-repeat: no-repeat
           background-position: center
           background-size: 40px auto
@@ -186,7 +179,7 @@
         
 
         .contenedorSerie__footer--checkbox--check:checked + .contenedorSerie__footer--checkbox--label::after
-          background-image: url("/src/assets/images/tick.png")
+          background-image: url("../../images/tick.png")
         
       
     

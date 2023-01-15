@@ -10,7 +10,7 @@ function Index() {
     const navigate = useNavigate();
     const opcionesGenero = {action: 'Acción', adventure:'Aventura', comedy:'Comedia', drama:'Drama', fantasy:'Fantasia'};
     const opcionesDecada = {2020:'2020s', 2010:'2010s', 2000:'2000s', 1990:'90s', 1980:'80s', 1970:'70s'};
-    const opcionesMedia = {90:'90% o más', 80:'80% o más', 70:'70% o más', 60:'60% o más', 50:'50% o más', 40:'40% o más'};
+    const opcionesMedia = {100: 'Sin límite', 90:'90% o menos', 80:'80% o menos', 70:'70% o menos', 60:'60% o menos', 50:'50% o menos', 40:'40% o menos'};
     const opcionesEstado = {releasing:'En publicación', finished:'Finalizado'};
     const opcionesTipo = {anime:'Anime', manga:'Manga'}
     const listaOpciones = {"Género":opcionesGenero, "Década":opcionesDecada, "Nota Media":opcionesMedia, "Estado":opcionesEstado, "Tipo":opcionesTipo}
