@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './header';
+import Header from '../layout/header';
 import { Helmet } from "react-helmet";
 
 function Error404() {
@@ -12,8 +12,8 @@ function Error404() {
             titulo="ERROR - 404"
         />
         <main className="contenedorError">
-            <img className="contenedorError__gif1"  src={require("../assets/images/walking.gif")} alt="Personaje andando"/>
-            <img className="contenedorError__gif2"  src={require("../assets/images/running.gif")} alt="Personaje corriendo"/>
+            <img className="contenedorError__gif1"  src={require("../../assets/images/walking.gif")} alt="Personaje andando"/>
+            <img className="contenedorError__gif2"  src={require("../../assets/images/running.gif")} alt="Personaje corriendo"/>
             <article className="contenedorError__mensaje">
                 <h2 className="contenedorError__mensaje--titulo">Página no encontrada</h2>
                 <section className="contenedorError__mensaje--descripcion">

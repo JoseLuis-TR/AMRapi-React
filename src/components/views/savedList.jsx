@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef} from "react";
-import Header from './header';
-import ResultBox from "./resultBox";
+import Header from '../layout/header';
+import ResultBox from "../resultBox";
 import { Helmet } from "react-helmet";
 
 function SavedList() {
@@ -111,27 +111,26 @@ function SavedList() {
                     titulo="Tu lista de guardados"
                 />
                 <main className="contenedorCentro">
-                
-                <article className="resultados">
-                    {
-                        dataReceived.length > 0 ?
-                        Object.entries(dataReceived).map((value, key) =>
-                            <ResultBox 
-                                key = {key}
-                                id = {value[1]["id"]}
-                                titulo = {value[1]["title"]["romaji"]}
-                                imagen = {value[1]["coverImage"]["extraLarge"]}
-                                status = {value[1]["status"]}
-                            />
-                        )
-                        :
-                        <article className="apiFailed">
-                            <p>Si no tienes nada guardado...<br></br>¡No tienes nada que ver aquí!</p>
-                            <img src={require("../assets/images/saved.gif")}></img>
-                        </article>
-                    }
-                </article>
-            </main>
+                    <article className="resultados">
+                        {
+                            dataReceived.length > 0 ?
+                            Object.entries(dataReceived).map((value, key) =>
+                                <ResultBox 
+                                    key = {key}
+                                    id = {value[1]["id"]}
+                                    titulo = {value[1]["title"]["romaji"]}
+                                    imagen = {value[1]["coverImage"]["extraLarge"]}
+                                    status = {value[1]["status"]}
+                                />
+                            )
+                            :
+                            <article className="apiFailed">
+                                <p>Si no tienes nada guardado...<br></br>¡No tienes nada que ver aquí!</p>
+                                <img src={require("../../assets/images/saved.gif")}></img>
+                            </article>
+                        }
+                    </article>
+                </main>
             </>
         )
     }

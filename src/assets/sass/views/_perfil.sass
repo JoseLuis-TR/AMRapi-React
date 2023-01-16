@@ -1,0 +1,213 @@
+@use '../utilities/_variables' as variable
+
+// Archivo que da estilo a la pagina de perfil que muestra información del usuario
+
+// Estilo del contenedor
+.contenedorPerfil
+    width: 80%
+    min-width: 300px
+    height: 70vh
+    background: white
+    display: flex
+    align-items: center
+    justify-content: center
+    border-radius: 10px
+    transition: 0.5s
+    margin-bottom: 50px
+    box-shadow: variable.$shadow-contenedor
+
+    // Estilo del contenedor que tiene los elementos de foto de perfil, nombre de usuario
+    // y numero de series guardadas
+    &__infoUsuario
+        width: 100%
+        height: 75%
+        display: flex
+        align-items: center
+        justify-content: space-evenly
+        flex-direction: column
+        transition: 0.5s
+
+        // Estilo de la foto de perfil
+        &--foto
+            width: 250px
+            border-radius: 900px
+            justify-self: flex-start
+            transition: 0.5s
+
+        // Estilo del nombre de usuario
+        &--nombreUsuario
+            font-size: 40px
+            font-weight: bold
+            border-bottom: black solid 1px
+            margin-bottom: 25px
+    
+        // Estilo del contenedor que tiene tanto el texto como el número de
+        // series guardadas por el usuario
+        &--guardadas
+            text-align: center
+            &--titulo
+                font-size: 20px
+                font-weight:bolder
+                text-decoration: underline
+            
+            &--numero
+                font-size: 30px
+                font-weight:bolder
+        
+    // Estilo de la linea que se usa para separar las dos partes de esta página
+    &__lineaVertical
+        height: 80%
+        border-left: 1px solid black
+    
+    // Estilo del contenedor referente a la modificación de datos y contiene diferentes
+    // inputs
+    &__modificarDatos
+        width: 100%
+        height: 90%
+        display: flex
+        align-items: center
+        justify-content: center
+        
+        // Estilo del formulario que contiene todos los inputs y el boton de modificar
+        &__formulario
+            width: 50%
+            max-width: 340px
+            display: flex
+            flex-direction: column
+            justify-content: center
+            align-items: center
+            transition: 0.5s
+            
+            // Estilo del texto que acompaña los inputs
+            &--label
+                align-self: flex-start
+                padding-left: 7%
+            
+            // Estilo de los inputs de texto
+            &--input
+                width: 100%
+                max-width: 260px
+                height: 30px
+                border: none
+                border-radius: 10px
+                background: variable.$boxes-color
+                margin: 5px 0 15px 0
+                padding-left: 10px
+                transition: 0.5s
+                box-shadow: variable.$shadow-input
+                &:focus
+                    outline: 1px solid #666666
+                
+            // Estilo de los elementos select
+            &--select
+                width: 100%
+                max-width: 260px
+                height: 30px
+                border: none
+                border-radius: 10px
+                background: variable.$boxes-color
+                margin: 5px 0 15px 0
+                padding-left: 10px
+                transition: 0.5s
+                font-size: 15px
+                box-shadow: variable.$shadow-input
+
+            // Estilo del boton de enviar modificacion
+            &--submit
+                height: 40px
+                width: 200px
+                transition: 0.5s
+                background-color: variable.$button-color
+                border: none
+                border-radius: 50px
+                margin-top: 7%
+                font-size: 25px
+                color:white
+                font-weight: 500
+                display: flex
+                align-items: center
+                justify-content: center
+                text-align: center
+                cursor: pointer
+                box-shadow: variable.$shadow-input
+                &:hover
+                    background-color: variable.$button-color-darker
+                
+// Archivo que usa la página de resultado de busqueda, el cual solo
+// necesita de un elemento para centrar la información ya que tanto
+// al buscador como a los resultados se les da estilo en otro archivo
+
+@media only screen and (max-width: 1000px)
+    .contenedorPerfil
+    
+        &__modificarDatos
+            &__formulario
+                width: 100%
+                
+                &--label
+                    padding-left: 10%
+                
+                &--input
+                    width: 80%
+
+                
+                &--select
+                    width: 80%
+        
+@media only screen and (max-width: 650px)
+    .contenedorPerfil
+        height: fit-content
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        &__infoUsuario
+            margin-bottom: 20px
+            &--foto
+                width: 100px
+                margin-top: 5%
+            
+            &--nombreUsuario
+                font-size: 30px
+                margin: 10px 0 25px
+            
+        &__lineaVertical
+            width: 80%
+            border-bottom: 1px solid black
+        
+        &__modificarDatos
+            margin-top: 20px
+            &__formulario                
+                &--label
+                    padding-left: 8%
+                
+                &--submit
+                    margin-bottom: 5%
+                
+@media only screen and (max-width: 350px)
+    .contenedorPerfil
+        &__infoUsuario
+            margin-bottom: 10px
+            &--foto
+                width: 90px
+            
+            &--nombreUsuario
+                font-size: 30px
+                margin-bottom: 20px
+            
+            &--guardadas
+                &--titulo
+                    font-size: 15px
+                
+                &--numero
+                    font-size: 25px
+                
+        &__modificarDatos
+            margin-top: 20px
+            &__formulario
+                &--label
+                    font-size: 13px
+                
+                &--submit
+                    font-size: 20px
+                    width: 150px

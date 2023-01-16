@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { validateEmail, validateUser, validateBirtDate, validatePassword, validateSamePass } from "../functions/formValidations";
-import Header from './header';
+import { validateEmail, validateUser, validateBirtDate, validatePassword, validateSamePass } from "../../functions/formValidations";
+import Header from '../layout/header';
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
-import RrssButton from "./botonRedSocial";
+import RrssButton from "../botonRedSocial";
 
 function Register() {
     const navigate = useNavigate();
@@ -88,16 +88,6 @@ function Register() {
         } else {
             alert("Falta algún dato o no siguen las normas de validación")
         }
-        // if(validateEmail(formObject["email"]) && formObject["contraseña"] === password){
-        //     console.log("validado")
-        //     contactValid = true;
-        // }
-        // if(contactValid){
-        //     alert("Login correcto")
-        //     navigate("/")
-        // } else {
-        //     alert("Email o password incorrectos")
-        // }
     }
 
     return (
@@ -126,15 +116,15 @@ function Register() {
                         <section className="form-radio">
                             <p>Escoge tu pronombre</p>
                             <label>
-                                <input type="radio" name="pronombre" value="Masculino"/>
+                                <input type="radio" name="pronombre" value="Masculino [el/ellos]"/>
                                 Masculino [el/ellos]
                             </label>
                             <label>
-                                <input type="radio" name="pronombre" value="Masculino [el/ellos]"/>
+                                <input type="radio" name="pronombre" value="Femenino [ella/ellas]"/>
                                 Femenino [ella/ellas]
                             </label>
                             <label>
-                                <input type="radio" name="pronombre" value="Masculino [el/ellos]"/>
+                                <input type="radio" name="pronombre" value="Neutro [elle/elles]"/>
                                 Neutro [elle/elles]
                             </label>
                         </section>

@@ -3,9 +3,9 @@ function Menu({showMenu, toggleOverlay}) {
         <nav className={showMenu ? "menu mostrar" : "menu"} id="menu__opciones">
             <i className="menu__close material-symbols-rounded" onClick={toggleOverlay}>Close</i>
             <div className="menu__perfil perfil">
-                <a href="perfil.html" className="menu__perfil__enlace">
-                    <img className="menu__perfil__enlace--pfp" src={require("../assets/images/pfp.jpg")} alt="Imagen de perfil"/>
-                    <p>Usuario</p>
+                <a href="/profile" className="menu__perfil__enlace">
+                    <img className="menu__perfil__enlace--pfp" src={require("../../assets/images/pfp.jpg")} alt="Imagen de perfil"/>
+                    <p>{localStorage.getItem("user") ? localStorage.getItem("user") : "NOUSER"}</p>
                 </a>
             </div>
             <a className="menu__enlace login" href="/login">

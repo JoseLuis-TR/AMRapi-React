@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { validateEmail, validateName, validateContactForm } from "../functions/formValidations";
-import Header from './header';
+import { validateEmail, validateName, validateContactForm } from "../../functions/formValidations";
+import Header from '../layout/header';
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 

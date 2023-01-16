@@ -1,6 +1,6 @@
 import React, {useRef} from "react";
-import Header from './header';
-import Dropdown from "./dropdown";
+import Header from '../layout/header';
+import Dropdown from "../dropdown";
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 

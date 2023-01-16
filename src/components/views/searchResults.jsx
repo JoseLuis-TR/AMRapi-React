@@ -1,10 +1,10 @@
 import React, {useEffect, useState, useRef} from "react";
-import Header from './header';
-import Dropdown from "./dropdown";
-import ResultBox from "./resultBox";
+import ReactPaginate from "react-paginate";
+import Header from '../layout/header';
+import Dropdown from "../dropdown";
+import ResultBox from "../resultBox";
 import { Helmet } from "react-helmet";
 import { useLocation } from "react-router-dom";
-import { RotatingLines } from  'react-loader-spinner'
 
 function Results() {
     let accents = require('remove-accents');
@@ -18,14 +18,13 @@ function Results() {
     const opcionesTipo = {anime:'Anime', manga:'Manga'};
     const listaOpciones = {"Género":opcionesGenero, "Década":opcionesDecada, "Nota Media":opcionesMedia, "Estado":opcionesEstado, "Tipo":opcionesTipo};
     const [dataReceived, setDataReceived] = useState([]);
-    const [genre, setGenre] = useState("");
-    const [age, setAge] = useState("");
-    const [avgScore, setAvgScore] = useState("");
-    const [status, setStatus] = useState("");
-    const [type, setType] = useState("");
+    const [pagination, setPagination] = useState([]);
+    const [pageCount, setPageCount] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const handleSearch = (event) => {
         event.preventDefault();
+        console.log(pagination)
         const formData = new FormData(formRef.current);
         const valuesSearch = Object.fromEntries(formData)
         let optionsToStorage = `${valuesSearch["genero"]},${valuesSearch["decada"]}, ${valuesSearch["notamedia"]},${valuesSearch["estado"]},${valuesSearch["tipo"]}`;
@@ -40,7 +39,6 @@ function Results() {
         query ($page: Int, $perPage: Int, $genre: String, $ageless: FuzzyDateInt, $agemore: FuzzyDateInt, $score: Int, $status: MediaStatus, $type: MediaType) {
             Page (page: $page, perPage: $perPage) {
                 pageInfo {
-                    total
                     currentPage
                     lastPage
                     hasNextPage
@@ -60,8 +58,8 @@ function Results() {
         }
         `;
         let variables = {
-            page: 1,
-            perPage: 100,
+            page : 2,
+            perPage: 9,
             genre: genre,
             ageless: `${decade}0000`,
             agemore: `${parseInt(decade)+10}0000`,
@@ -100,12 +98,14 @@ function Results() {
         let resultados
         Object.entries(data).forEach(([label,values])=>{
             resultados = values.Page.media;
+            console.log(values)
             if(resultados.length !== 0){
                 setDataReceived(resultados)
+                setPagination(values.Page.pageInfo)
             } else {
                 setDataReceived(undefined)
+                setPagination(undefined)
             }
-            console.log(dataReceived);
         })
     }
 
@@ -116,6 +116,7 @@ function Results() {
 
     useEffect(() =>{
         fetchData(valuesIndex["genero"],valuesIndex["decada"], valuesIndex["notamedia"],valuesIndex["estado"],valuesIndex["tipo"]);
+        console.log(pagination)
     }, [valuesIndex]);
 
     return (
@@ -160,11 +161,15 @@ function Results() {
                         />
                     )
                 }
+                <ReactPaginate 
+                    breakLabel="..."
+                    //pageCount={pagination.lastPage}
+                />
                 </article>
                 :
                 <article className="apiFailed">
                     <p>¡Disculpa!<br></br>Lo que buscabas no pudo ser encontrado</p>
-                    <img src={require("../assets/images/search.gif")}></img>
+                    <img src={require("../../assets/images/search.gif")}></img>
                 </article>
             }
         </main>

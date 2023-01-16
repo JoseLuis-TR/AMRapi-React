@@ -94,7 +94,6 @@
           font-size: 30px
           transition: 0.5s
         
-      
       &--linkAnilist
         background-color: #1E2630
         width: 200px
@@ -112,10 +111,6 @@
           color: white
           font-size: 25px
           font-weight: 700
-        
-      
-    
-
 
     // Estilo del footer del contenedor que acoge la información sobre los generos de la serie
     // además del boton para añadir o eliminar de la lista el producto
@@ -145,8 +140,6 @@
           align-items: center
           justify-content: center
         
-      
-
       // Codigo que se encarga del boton de añadir serie a la lista
       .contenedorSerie__footer--checkbox
         display: flex
@@ -181,11 +174,6 @@
         .contenedorSerie__footer--checkbox--check:checked + .contenedorSerie__footer--checkbox--label::after
           background-image: url("../../images/tick.png")
         
-      
-    
-  
-
-
 // -------------------------
 // Zona de media queries
 
@@ -205,8 +193,6 @@
         &--imagen
           border-radius: 10px
         
-      
-
       &__info
         grid-area: info
       
@@ -225,17 +211,12 @@
         grid-area: footer
         border-radius: 0 0 10px 10px
       
-    
-  
-
-
 @media only screen and (max-width: 730px)
   .contenedorCentro
     .contenedorSerie
       &__info
         padding-left: 5px
       
-  
       &__extra
         display: flex
         flex-direction: column
@@ -246,13 +227,6 @@
           &--texto
             display: none
           
-        
-      
-    
-  
-
-
-
 @media only screen and (max-width: 550px)
   .contenedorCentro
     .contenedorSerie
@@ -261,8 +235,6 @@
         &--imagen
           width: 100%
           height: auto
-        
-      
   
       &__info
         &--titulo
@@ -273,15 +245,10 @@
           &--texto
             font-size: 15px
           
-        
-      
-  
       &__sinopsis
         &--texto
           font-size: 17px
         
-      
-  
       &__extra
         &--nota
           &--imagen
@@ -293,8 +260,3 @@
         
         &--linkAnilist
           margin-bottom: 20px
-        
-      
-    
-  
-

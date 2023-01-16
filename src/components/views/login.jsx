@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { validateEmail } from "../functions/formValidations";
-import Header from './header';
+import { validateEmail } from "../../functions/formValidations";
+import Header from '../layout/header';
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
-import RrssButton from "./botonRedSocial";
+import RrssButton from "../botonRedSocial";
 
 function Login() {
     const navigate = useNavigate();

@@ -1,10 +1,10 @@
 import React, { useState, useEffect} from "react";
-import Header from './header';
+import Header from '../layout/header';
 import { Helmet } from "react-helmet";
 import { useLocation } from "react-router-dom";
-import Smiley from "./smiley";
-import Status from "./status";
-import Genres from "./genres";
+import Smiley from "../smiley";
+import Status from "../status";
+import Genres from "../genres";
 
 function ProductDetails() {
     const location = useLocation();
@@ -39,6 +39,7 @@ function ProductDetails() {
                     episodes
                     chapters
                     description
+                    averageScore
                     meanScore
                     genres
                     status
@@ -166,12 +167,12 @@ function ProductDetails() {
                         <section className="contenedorSerie__extra">
                             <div className="contenedorSerie__extra--nota">
                                 <Smiley 
-                                    nota={apiData["meanScore"]}
+                                    nota={apiData["averageScore"]}
                                 />
-                                <p className="contenedorSerie__extra--nota--texto">{apiData["meanScore"] !== null ? apiData["meanScore"] : "N/A"}%</p>
+                                <p className="contenedorSerie__extra--nota--texto">{apiData["averageScore"] !== null ? apiData["averageScore"] : "N/A"}%</p>
                             </div>
                             <a target="_blank" rel="noopener noreferrer" className="contenedorSerie__extra--linkAnilist" href={`https://anilist.com/${apiData["type"]}/${apiData["id"]}/${apiData["title"]["romaji"].replace(" ","-")}/`}>
-                                <img src={require("../assets/images/anilist.png")} alt="Logo de Anilist" className="contenedorSerie__extra--linkAnilist--imagen"/>
+                                <img src={require("../../assets/images/anilist.png")} alt="Logo de Anilist" className="contenedorSerie__extra--linkAnilist--imagen"/>
                                 <p className="contenedorSerie__extra--linkAnilist--texto">Ver + info</p>
                             </a>
                         </section>

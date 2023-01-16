@@ -3,7 +3,7 @@ import React from 'react';
 function Dropdown(props) {
   return (
       <fieldset key={props.key} className="centro__busqueda--opcion">
-          <label for={props.info}>{props.label}</label>
+          <label htmlFor={props.info}>{props.label}</label>
           <select name={props.info} id={props.info} onChange={props.hey}>
           {
             Object.entries(props.opciones).map((key,index) =>
