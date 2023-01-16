@@ -8,23 +8,23 @@ function Menu({showMenu, toggleOverlay}) {
                     <p>Usuario</p>
                 </a>
             </div>
-            <a className="menu__enlace login" href="login.html">
+            <a className="menu__enlace login" href="/login">
                 <i className="material-symbols-rounded">login</i>
                 <p>Login</p>
             </a>
-            <a className="menu__enlace registro" href="registro.html">
+            <a className="menu__enlace registro" href="/register">
                 <i className="material-symbols-rounded">person_add</i>
                 <p>Registro</p>
             </a>
-            <a className="menu__enlace inicio" href="index.html">
+            <a className="menu__enlace inicio" href="/">
                 <i className="material-symbols-rounded">home</i>
                 <p>Inicio</p>
             </a>
-            <a className="menu__enlace lista" href="mylist.html">
+            <a className="menu__enlace lista" href="/savedlist">
                 <i className="material-symbols-rounded">list</i>
                 <p>Mi lista</p>
             </a>
-            <a className="menu__enlace contacto" href="contacto.html">
+            <a className="menu__enlace contacto" href="/contact">
                 <i className="material-symbols-rounded">mail</i>
                 <p>Contacto</p>
             </a>

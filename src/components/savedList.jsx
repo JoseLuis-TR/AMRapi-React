@@ -1,33 +1,15 @@
 import React, {useEffect, useState, useRef} from "react";
 import Header from './header';
-import Dropdown from "./dropdown";
 import ResultBox from "./resultBox";
 import { Helmet } from "react-helmet";
-import { useLocation } from "react-router-dom";
 
 function SavedList() {
-    let accents = require('remove-accents');
-    const formRef = useRef();
-    const state = useLocation();
-    const valuesIndex = state["state"];
-    const opcionesGenero = {action: 'Acción', adventure:'Aventura', comedy:'Comedia', drama:'Drama', fantasy:'Fantasia'};
-    const opcionesDecada = {2020:'2020s', 2010:'2010s', 2000:'2000s', 1990:'90s', 1980:'80s', 1970:'70s'};
-    const opcionesMedia = {100: 'Sin límite', 90:'90% o menos', 80:'80% o menos', 70:'70% o menos', 60:'60% o menos', 50:'50% o menos', 40:'40% o menos'};
-    const opcionesEstado = {releasing:'En publicación', finished:'Finalizado'};
-    const opcionesTipo = {anime:'Anime', manga:'Manga'};
-    const listaOpciones = {"Género":opcionesGenero, "Década":opcionesDecada, "Nota Media":opcionesMedia, "Estado":opcionesEstado, "Tipo":opcionesTipo};
-    const savedData = localStorage.getItem("mediaSaved").split(",");
-    const savedProducts = [];
     const [dataReceived, setDataReceived] = useState([]);
-    const [genre, setGenre] = useState("");
-    const [age, setAge] = useState("");
-    const [avgScore, setAvgScore] = useState("");
-    const [status, setStatus] = useState("");
-    const [type, setType] = useState("");
+    const [isLoaded, setLoaded] = useState(false);
 
-    async function prepareQuery(id){
+    async function fetchData(idList){
         let query = `
-        query ($page: Int, $perPage: Int, $id: Int) {
+        query ($page: Int, $perPage: Int, $idList: [Int]) {
             Page (page: $page, perPage: $perPage) {
                 pageInfo {
                     total
@@ -36,7 +18,7 @@ function SavedList() {
                     hasNextPage
                     perPage
                 }
-                media (id: $id) {
+                media (id_in: $idList) {
                     id
                     coverImage{
                         extraLarge
@@ -49,10 +31,11 @@ function SavedList() {
             }
         }
         `;
+
         let variables = {
             page: 1,
             perPage: 10,
-            id: id
+            idList: idList
         };
 
         console.log(variables)
@@ -70,7 +53,11 @@ function SavedList() {
             })
         };
 
-        return [url,options];
+        console.log(options)
+
+        await fetch(url, options).then(handleResponse)
+                        .then(handleData)
+                        .catch(handleError);
     }
 
     function handleResponse(response) {
@@ -86,11 +73,7 @@ function SavedList() {
         let resultados
         Object.entries(data).forEach(([label,values])=>{
             resultados = values.Page.media;
-            if(resultados.length !== 0){
-                setDataReceived(resultados)
-            } else {
-                setDataReceived(undefined)
-            }
+            setDataReceived(resultados)
             console.log(dataReceived);
         })
     }
@@ -100,73 +83,57 @@ function SavedList() {
         console.error(error);
     }
 
-    async function printFavs(){
-        for(let i=0; i < savedData.length; i++){
-            console.log(savedData[i]);
-            let query = prepareQuery(savedData[i]);
-            const fetchData = async () => {
-                await fetch(query[0], query[1]).then(handleResponse)
-                                                .then(handleData)
-                                                .catch(handleError);
-            }
-            fetchData();
-            console.log(dataReceived);
-        }
-    }
-
     useEffect(() =>{
-        for(let i=0; i < savedData.length; i++){
-            console.log(savedData[i]);
-            let query = prepareQuery(savedData[i]);
-            console.log(query);
-            const fetchData = async () => {
-                await fetch(query[0], query[1]).then(handleResponse)
-                                                .then(handleData)
-                                                .catch(handleError);
-            }
-            fetchData();
-            console.log(dataReceived);
+        console.log(localStorage.getItem("mediaSaved") === "")
+        if(localStorage.getItem("mediaSaved") === "" || localStorage.getItem("mediaSaved") === null){
+            console.log("noLS")
+            setDataReceived([]);
+        } else {
+            console.log("lista existe")
+            let savedList = localStorage.getItem("mediaSaved").split(",");
+            console.log(savedList)
+            fetchData(savedList)
         }
     }, []);
 
-    return (
-        <>
-            <Helmet>
-                <title>AMR - Resultados de busqueda</title>
-            </Helmet>
-            <Header 
-                titulo="Busqueda"
-            />
-            <main className="contenedorCentro">
-            <article className="centro">
-                <form className="centro__busqueda busqueda__inicio" ref={formRef}>
-                    <section className="dropdowns">
-                        {
-                            Object.entries(listaOpciones).map((value,key) => 
-                                <Dropdown
-                                    key = {key} 
-                                    info={accents.remove(value[0].trim().toLowerCase().split(" ").join(""))}
-                                    label={value[0]}
-                                    opciones = {value[1]}
-                                />
-                                )
-                        }
-                    </section>
-                    <section className="button">
-                        <button  className="centro__inputBusqueda" >Buscar</button>
-                    </section>
-                </form>
-            </article>
-            {
-                dataReceived ?
-                <article class="resultados">
-                <p>D:</p>
+    useEffect(() => {
+        setLoaded(true);
+        console.log(dataReceived.length)
+    }, [dataReceived])
+
+    if(isLoaded){
+        return (
+            <>
+                <Helmet>
+                    <title>AMR - Tu lista de guardados</title>
+                </Helmet>
+                <Header 
+                    titulo="Tu lista de guardados"
+                />
+                <main className="contenedorCentro">
+                
+                <article className="resultados">
+                    {
+                        dataReceived.length > 0 ?
+                        Object.entries(dataReceived).map((value, key) =>
+                            <ResultBox 
+                                key = {key}
+                                id = {value[1]["id"]}
+                                titulo = {value[1]["title"]["romaji"]}
+                                imagen = {value[1]["coverImage"]["extraLarge"]}
+                                status = {value[1]["status"]}
+                            />
+                        )
+                        :
+                        <article className="apiFailed">
+                            <p>Si no tienes nada guardado...<br></br>¡No tienes nada que ver aquí!</p>
+                            <img src={require("../assets/images/saved.gif")}></img>
+                        </article>
+                    }
                 </article>
-                :
-                <p>:D</p>
-            }
-        </main>
-        </>
-    )
+            </main>
+            </>
+        )
+    }
 }
 export default SavedList;

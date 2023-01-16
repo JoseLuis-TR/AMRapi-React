@@ -1,0 +1,76 @@
+@use '../utilities/_variables' as variable
+
+// Archivo que da estilo al formulario de registro, en el cual solo
+// se modifica un poco el checkbox de las condiciones
+
+.contenedorGenerico
+    &__formulario
+        // Estilo del contenedor de las condiciones
+
+        .form-radio
+            width: 150%
+            display: flex
+            flex-direction: column
+            align-items: center
+            p
+                font-size: 18px
+                font-weight: bold
+                margin-bottom: 5px
+                margin-top: 5px 
+            label
+                align-self: flex-start
+                margin: 2px 0 2px 30%
+                input
+                    margin-right: 5px
+            
+
+        &--condiciones
+            width: 150%
+            display: flex
+            justify-content: center
+            gap: 10px
+            margin: 5px 0 15px
+
+            // Estilo del checkbox
+            &--checkbox
+                width: 15px
+                transition: 0.5s
+
+            // Estilo del texto que acompaña al checkbox
+            &--texto
+                font-size: 15px
+                transition: 0.5s
+.p-sola
+    font-size: 18px
+    font-weight: bold
+    margin-top: 5px 
+// -------------------------
+// Zona de media queries
+
+@media only screen and (max-width: 450px)
+    .contenedorGenerico
+        &__formulario
+            .form-radio
+                p
+                label
+                    margin: 2px 0 2px 15%
+                    input
+                        margin-right: 5px
+            &--condiciones
+                &--checkbox
+                    width: 13px
+                
+                &--texto
+                    font-size: 13px
+
+@media only screen and (max-width: 350px)
+    .contenedorGenerico
+        &__formulario
+            &--condiciones
+                width: 150%
+                &--texto
+                    font-size: 11px
+                
+            
+        
+    

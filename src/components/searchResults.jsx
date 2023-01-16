@@ -4,6 +4,7 @@ import Dropdown from "./dropdown";
 import ResultBox from "./resultBox";
 import { Helmet } from "react-helmet";
 import { useLocation } from "react-router-dom";
+import { RotatingLines } from  'react-loader-spinner'
 
 function Results() {
     let accents = require('remove-accents');
@@ -60,7 +61,7 @@ function Results() {
         `;
         let variables = {
             page: 1,
-            perPage: 30,
+            perPage: 100,
             genre: genre,
             ageless: `${decade}0000`,
             agemore: `${parseInt(decade)+10}0000`,
@@ -147,7 +148,7 @@ function Results() {
             </article>
             {
                 dataReceived ?
-                <article class="resultados">
+                <article className="resultados">
                 {
                     Object.entries(dataReceived).map((value, key) =>
                         <ResultBox 
@@ -161,7 +162,10 @@ function Results() {
                 }
                 </article>
                 :
-                <p>:D</p>
+                <article className="apiFailed">
+                    <p>¡Disculpa!<br></br>Lo que buscabas no pudo ser encontrado</p>
+                    <img src={require("../assets/images/search.gif")}></img>
+                </article>
             }
         </main>
         </>
