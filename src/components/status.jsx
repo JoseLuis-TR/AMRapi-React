@@ -17,6 +17,7 @@
  * @returns {JSX.Element} Contenido HTML referente al estado de publicación del producto mostrado en la vista detallada
  */
 function Status({statusM, episodes}) {
+    console.log(statusM)
     if(statusM === "FINISHED"){
         return(
             <p className="contenedorSerie__info--basico--texto">{episodes} episodios</p>

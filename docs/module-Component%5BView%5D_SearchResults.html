@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: Component[View]_SavedList</title>
+    <title>JSDoc: Module: Component[View]_SearchResults</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: Component[View]_SavedList</h1>
+    <h1 class="page-title">Module: Component[View]_SearchResults</h1>
 
     
 
@@ -67,7 +67,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_views_savedList.jsx.html">components/views/savedList.jsx</a>, <a href="components_views_savedList.jsx.html#line6">line 6</a>
+        <a href="components_views_searchResults.jsx.html">components/views/searchResults.jsx</a>, <a href="components_views_searchResults.jsx.html#line6">line 6</a>
     </li></ul></dd>
     
 
@@ -106,7 +106,7 @@
     
 
     
-    <h4 class="name" id=".SavedList"><span class="type-signature">(static) </span>SavedList<span class="signature">()</span><span class="type-signature"> &rarr; {JSX.Element}</span></h4>
+    <h4 class="name" id=".Results"><span class="type-signature">(static) </span>Results<span class="signature">()</span><span class="type-signature"> &rarr; {JSX.Element}</span></h4>
     
 
     
@@ -114,16 +114,18 @@
 
 
 <div class="description">
-    <p>Componente que se encarga de renderizar la lista de productos guardados por el usuario
+    <p>Componente que se encarga de renderizar los resultados de las busquedas que se hagan en la web
 <br>
 <br>
 <b><u>FUNCIONES INTERNAS</u></b>
 <br></p>
 <ul>
+<li><b>handleSearch</b></li>
 <li><b>fetchData</b></li>
 <li><b>handleResponse</b></li>
 <li><b>handleData</b></li>
 <li><b>handleError</b></li>
+<li><b>paginate</b></li>
 </ul>
 </div>
 
@@ -168,7 +170,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_views_savedList.jsx.html">components/views/savedList.jsx</a>, <a href="components_views_savedList.jsx.html#line29">line 29</a>
+        <a href="components_views_searchResults.jsx.html">components/views/searchResults.jsx</a>, <a href="components_views_searchResults.jsx.html#line34">line 34</a>
     </li></ul></dd>
     
 
@@ -226,7 +228,7 @@
     
 
     
-    <h4 class="name" id="~fetchData"><span class="type-signature">(async, inner) </span>fetchData<span class="signature">(idList)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="~fetchData"><span class="type-signature">(async, inner) </span>fetchData<span class="signature">(genre, decade, avgScore, status, type)</span><span class="type-signature"></span></h4>
     
 
     
@@ -272,13 +274,13 @@ para formatear la respuesta</p>
 
         <tr>
             
-                <td class="name"><code>idList</code></td>
+                <td class="name"><code>genre</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;string></span>
+<span class="param-type">string</span>
 
 
             
@@ -288,7 +290,99 @@ para formatear la respuesta</p>
 
             
 
-            <td class="description last"><p>Lista de ids de las series guardadas por el usuario</p></td>
+            <td class="description last"><p>Filtro del genero por el que queremos buscar</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>decade</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Filtro de la decada por el que queremos buscar</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>avgScore</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Filtro de la nota media por el que queremos buscar</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>status</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Filtro del estado de publicación por el que queremos buscar</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Filtro del tipo de producto por el que queremos buscar</p></td>
         </tr>
 
     
@@ -329,7 +423,7 @@ para formatear la respuesta</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_views_savedList.jsx.html">components/views/savedList.jsx</a>, <a href="components_views_savedList.jsx.html#line35">line 35</a>
+        <a href="components_views_searchResults.jsx.html">components/views/searchResults.jsx</a>, <a href="components_views_searchResults.jsx.html#line78">line 78</a>
     </li></ul></dd>
     
 
@@ -467,7 +561,7 @@ información que necesitamos para nuestra aplicación</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_views_savedList.jsx.html">components/views/savedList.jsx</a>, <a href="components_views_savedList.jsx.html#line110">line 110</a>
+        <a href="components_views_searchResults.jsx.html">components/views/searchResults.jsx</a>, <a href="components_views_searchResults.jsx.html#line161">line 161</a>
     </li></ul></dd>
     
 
@@ -605,7 +699,7 @@ y nos ayuda a entender cual ha sido el problema</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_views_savedList.jsx.html">components/views/savedList.jsx</a>, <a href="components_views_savedList.jsx.html#line125">line 125</a>
+        <a href="components_views_searchResults.jsx.html">components/views/searchResults.jsx</a>, <a href="components_views_searchResults.jsx.html#line180">line 180</a>
     </li></ul></dd>
     
 
@@ -743,7 +837,282 @@ la respuesta que recibamos</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_views_savedList.jsx.html">components/views/savedList.jsx</a>, <a href="components_views_savedList.jsx.html#line97">line 97</a>
+        <a href="components_views_searchResults.jsx.html">components/views/searchResults.jsx</a>, <a href="components_views_searchResults.jsx.html#line148">line 148</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~handleSearch"><span class="type-signature">(inner) </span>handleSearch<span class="signature">(event)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Función que es llamada cuando realizamos la busqueda en la propia página de busqueda, recoge los datos y
+realiza la llamada a la API</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>event</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">event</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Evento con todos los datos del formulario de busqueda</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_views_searchResults.jsx.html">components/views/searchResults.jsx</a>, <a href="components_views_searchResults.jsx.html#line62">line 62</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~paginate"><span class="type-signature">(inner) </span>paginate<span class="signature">(pageNumber)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Función de la que haremos uso cuando querramos indicar en que página de la paginación estamos</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>pageNumber</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Numero que indicara en que página queremos estar</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_views_searchResults.jsx.html">components/views/searchResults.jsx</a>, <a href="components_views_searchResults.jsx.html#line204">line 204</a>
     </li></ul></dd>
     
 

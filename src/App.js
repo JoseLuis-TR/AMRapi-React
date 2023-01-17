@@ -13,6 +13,7 @@ import UserProfile from "./components/views/userProfile";
 function App() {
   return (
 
+    // Uso de la libreria router con la que podremos movernos entre las distintas páginas de nuestra web
     <Router>
       <Routes>
         <Route exact path="/" element={<Index />} />

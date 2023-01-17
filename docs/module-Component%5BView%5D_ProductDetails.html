@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: Component[View]_SavedList</title>
+    <title>JSDoc: Module: Component[View]_ProductDetails</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: Component[View]_SavedList</h1>
+    <h1 class="page-title">Module: Component[View]_ProductDetails</h1>
 
     
 
@@ -67,7 +67,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_views_savedList.jsx.html">components/views/savedList.jsx</a>, <a href="components_views_savedList.jsx.html#line6">line 6</a>
+        <a href="components_views_productDetails.jsx.html">components/views/productDetails.jsx</a>, <a href="components_views_productDetails.jsx.html#line6">line 6</a>
     </li></ul></dd>
     
 
@@ -106,7 +106,7 @@
     
 
     
-    <h4 class="name" id=".SavedList"><span class="type-signature">(static) </span>SavedList<span class="signature">()</span><span class="type-signature"> &rarr; {JSX.Element}</span></h4>
+    <h4 class="name" id=".ProductDetails"><span class="type-signature">(static) </span>ProductDetails<span class="signature">()</span><span class="type-signature"> &rarr; {JSX.Element}</span></h4>
     
 
     
@@ -114,16 +114,17 @@
 
 
 <div class="description">
-    <p>Componente que se encarga de renderizar la lista de productos guardados por el usuario
+    <p>Componente que se encarga de mostrar en detalle un producto
 <br>
 <br>
 <b><u>FUNCIONES INTERNAS</u></b>
 <br></p>
 <ul>
-<li><b>fetchData</b></li>
+<li><b>prepareQuery</b></li>
 <li><b>handleResponse</b></li>
 <li><b>handleData</b></li>
 <li><b>handleError</b></li>
+<li><b>handleSaveCheck</b></li>
 </ul>
 </div>
 
@@ -168,7 +169,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_views_savedList.jsx.html">components/views/savedList.jsx</a>, <a href="components_views_savedList.jsx.html#line29">line 29</a>
+        <a href="components_views_productDetails.jsx.html">components/views/productDetails.jsx</a>, <a href="components_views_productDetails.jsx.html#line33">line 33</a>
     </li></ul></dd>
     
 
@@ -226,7 +227,7 @@
     
 
     
-    <h4 class="name" id="~fetchData"><span class="type-signature">(async, inner) </span>fetchData<span class="signature">(idList)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="~fetchData"><span class="type-signature">(async, inner) </span>fetchData<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -234,9 +235,7 @@
 
 
 <div class="description">
-    <p>Función que es llamada para controlar la recolección de los datos de la api, la cual
-crea la query, opciones y url para luego hacer las pertinentes llamadas a la api y funciones necesaria
-para formatear la respuesta</p>
+    <p>Función asincrona con la que hacemos la llamada a la api</p>
 </div>
 
 
@@ -245,55 +244,6 @@ para formatear la respuesta</p>
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>idList</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;string></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Lista de ids de las series guardadas por el usuario</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -329,7 +279,7 @@ para formatear la respuesta</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_views_savedList.jsx.html">components/views/savedList.jsx</a>, <a href="components_views_savedList.jsx.html#line35">line 35</a>
+        <a href="components_views_productDetails.jsx.html">components/views/productDetails.jsx</a>, <a href="components_views_productDetails.jsx.html#line189">line 189</a>
     </li></ul></dd>
     
 
@@ -467,7 +417,7 @@ información que necesitamos para nuestra aplicación</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_views_savedList.jsx.html">components/views/savedList.jsx</a>, <a href="components_views_savedList.jsx.html#line110">line 110</a>
+        <a href="components_views_productDetails.jsx.html">components/views/productDetails.jsx</a>, <a href="components_views_productDetails.jsx.html#line128">line 128</a>
     </li></ul></dd>
     
 
@@ -605,7 +555,7 @@ y nos ayuda a entender cual ha sido el problema</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_views_savedList.jsx.html">components/views/savedList.jsx</a>, <a href="components_views_savedList.jsx.html#line125">line 125</a>
+        <a href="components_views_productDetails.jsx.html">components/views/productDetails.jsx</a>, <a href="components_views_productDetails.jsx.html#line143">line 143</a>
     </li></ul></dd>
     
 
@@ -743,7 +693,7 @@ la respuesta que recibamos</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_views_savedList.jsx.html">components/views/savedList.jsx</a>, <a href="components_views_savedList.jsx.html#line97">line 97</a>
+        <a href="components_views_productDetails.jsx.html">components/views/productDetails.jsx</a>, <a href="components_views_productDetails.jsx.html#line115">line 115</a>
     </li></ul></dd>
     
 
@@ -768,6 +718,255 @@ la respuesta que recibamos</p>
 
 
 
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~handleSaveCheck"><span class="type-signature">(inner) </span>handleSaveCheck<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Función que se activa al hacer click en el checkbox y nos ayuda a guardar el id del producto
+en una lista en el localStorage</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_views_productDetails.jsx.html">components/views/productDetails.jsx</a>, <a href="components_views_productDetails.jsx.html#line155">line 155</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~prepareQuery"><span class="type-signature">(inner) </span>prepareQuery<span class="signature">(id)</span><span class="type-signature"> &rarr; {Array.&lt;string, Object>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Función que recibe el id del producto que quiere ser visto y prepara la url y opciones
+necesarias para hacer la llamada a la API</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Id del producto que queremos ver</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="components_views_productDetails.jsx.html">components/views/productDetails.jsx</a>, <a href="components_views_productDetails.jsx.html#line47">line 47</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Array con la url y las opciones que contienen la query</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;string, Object></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
