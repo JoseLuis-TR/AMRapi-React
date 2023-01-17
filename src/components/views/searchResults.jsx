@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useRef} from "react";
 import ReactPaginate from "react-paginate";
+import Pagination from "../pagination";
 import Header from '../layout/header';
 import Dropdown from "../dropdown";
 import ResultBox from "../resultBox";
@@ -8,6 +9,9 @@ import { useLocation } from "react-router-dom";
 
 function Results() {
     let accents = require('remove-accents');
+    let indexOfFirstPost = 0;
+    let indexOfLastPost = 0;
+    let currentPosts = [];
     const formRef = useRef();
     const state = useLocation();
     const valuesIndex = state["state"];
@@ -18,13 +22,12 @@ function Results() {
     const opcionesTipo = {anime:'Anime', manga:'Manga'};
     const listaOpciones = {"Género":opcionesGenero, "Década":opcionesDecada, "Nota Media":opcionesMedia, "Estado":opcionesEstado, "Tipo":opcionesTipo};
     const [dataReceived, setDataReceived] = useState([]);
-    const [pagination, setPagination] = useState([]);
-    const [pageCount, setPageCount] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
+    const [postPerPage, setPostPerPage] = useState(6);
+
 
     const handleSearch = (event) => {
         event.preventDefault();
-        console.log(pagination)
         const formData = new FormData(formRef.current);
         const valuesSearch = Object.fromEntries(formData)
         let optionsToStorage = `${valuesSearch["genero"]},${valuesSearch["decada"]}, ${valuesSearch["notamedia"]},${valuesSearch["estado"]},${valuesSearch["tipo"]}`;
@@ -58,8 +61,8 @@ function Results() {
         }
         `;
         let variables = {
-            page : 2,
-            perPage: 9,
+            page : 1,
+            perPage: 60,
             genre: genre,
             ageless: `${decade}0000`,
             agemore: `${parseInt(decade)+10}0000`,
@@ -98,13 +101,11 @@ function Results() {
         let resultados
         Object.entries(data).forEach(([label,values])=>{
             resultados = values.Page.media;
-            console.log(values)
+            console.log(values.Page.media.slice(1,3))
             if(resultados.length !== 0){
                 setDataReceived(resultados)
-                setPagination(values.Page.pageInfo)
             } else {
                 setDataReceived(undefined)
-                setPagination(undefined)
             }
         })
     }
@@ -114,10 +115,24 @@ function Results() {
         console.error(error);
     }
 
+    function handlePagination(){
+        console.log(dataReceived)
+    }
+
     useEffect(() =>{
         fetchData(valuesIndex["genero"],valuesIndex["decada"], valuesIndex["notamedia"],valuesIndex["estado"],valuesIndex["tipo"]);
-        console.log(pagination)
+        handlePagination()
     }, [valuesIndex]);
+    
+    if(dataReceived){
+        indexOfLastPost = currentPage * postPerPage;
+        indexOfFirstPost = indexOfLastPost - postPerPage;
+        currentPosts = dataReceived.slice(indexOfFirstPost, indexOfLastPost);
+    }
+
+    function paginate(pageNumber){
+        setCurrentPage(pageNumber)
+    }
 
     return (
         <>
@@ -149,23 +164,26 @@ function Results() {
             </article>
             {
                 dataReceived ?
-                <article className="resultados">
-                {
-                    Object.entries(dataReceived).map((value, key) =>
-                        <ResultBox 
-                            key = {key}
-                            id = {value[1]["id"]}
-                            titulo = {value[1]["title"]["romaji"]}
-                            imagen = {value[1]["coverImage"]["extraLarge"]}
-                            status = {value[1]["status"]}
+                <>
+                    <article className="resultados">
+                    {
+                        Object.entries(currentPosts).map((value, key) =>
+                            <ResultBox 
+                                key = {key}
+                                id = {value[1]["id"]}
+                                titulo = {value[1]["title"]["romaji"]}
+                                imagen = {value[1]["coverImage"]["extraLarge"]}
+                                status = {value[1]["status"]}
+                            />
+                        )
+                    }
+                    </article>
+                    <Pagination 
+                            postPerPage={postPerPage}
+                            totalPosts={dataReceived.length}
+                            paginate={paginate}
                         />
-                    )
-                }
-                <ReactPaginate 
-                    breakLabel="..."
-                    //pageCount={pagination.lastPage}
-                />
-                </article>
+                </>
                 :
                 <article className="apiFailed">
                     <p>¡Disculpa!<br></br>Lo que buscabas no pudo ser encontrado</p>
