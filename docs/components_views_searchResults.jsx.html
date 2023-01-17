@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/views/searchResults.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/views/searchResults.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {useEffect, useState, useRef} from "react";
+import Pagination from "../pagination";
+import Header from '../layout/header';
+import Dropdown from "../dropdown";
+import ResultBox from "../resultBox";
+import { Helmet } from "react-helmet";
+import { useLocation } from "react-router-dom";
+
+
+function Results() {
+    let accents = require('remove-accents');
+    let indexOfFirstPost = 0;
+    let indexOfLastPost = 0;
+    let currentPosts = [];
+    const formRef = useRef();
+    const state = useLocation();
+    const valuesIndex = state["state"];
+    const opcionesGenero = {action: 'Acción', adventure:'Aventura', comedy:'Comedia', drama:'Drama', fantasy:'Fantasia'};
+    const opcionesDecada = {2020:'2020s', 2010:'2010s', 2000:'2000s', 1990:'90s', 1980:'80s', 1970:'70s'};
+    const opcionesMedia = {100: 'Sin límite', 90:'90% o menos', 80:'80% o menos', 70:'70% o menos', 60:'60% o menos', 50:'50% o menos', 40:'40% o menos'};
+    const opcionesEstado = {releasing:'En publicación', finished:'Finalizado'};
+    const opcionesTipo = {anime:'Anime', manga:'Manga'};
+    const listaOpciones = {"Género":opcionesGenero, "Década":opcionesDecada, "Nota Media":opcionesMedia, "Estado":opcionesEstado, "Tipo":opcionesTipo};
+    const [dataReceived, setDataReceived] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postPerPage] = useState(6);
+
+
+    const handleSearch = (event) => {
+        event.preventDefault();
+        const formData = new FormData(formRef.current);
+        const valuesSearch = Object.fromEntries(formData)
+        let optionsToStorage = `${valuesSearch["genero"]},${valuesSearch["decada"]}, ${valuesSearch["notamedia"]},${valuesSearch["estado"]},${valuesSearch["tipo"]}`;
+        optionsToStorage.replace(/\\/g, '')
+        localStorage.setItem("searchResult",`${valuesSearch["genero"]},${valuesSearch["decada"]}, ${valuesSearch["notamedia"]},${valuesSearch["estado"]},${valuesSearch["tipo"]}`)
+        fetchData(valuesSearch["genero"],valuesSearch["decada"],valuesSearch["notamedia"],valuesSearch["estado"],valuesSearch["tipo"])
+    }
+
+    async function fetchData(genre, decade, avgScore, status, type){
+        let query = `
+        query ($page: Int, $perPage: Int, $genre: String, $ageless: FuzzyDateInt, $agemore: FuzzyDateInt, $score: Int, $status: MediaStatus, $type: MediaType) {
+            Page (page: $page, perPage: $perPage) {
+                pageInfo {
+                    currentPage
+                    lastPage
+                    hasNextPage
+                    perPage
+                }
+                media (isAdult: false, genre_in: [$genre], startDate_greater:$ageless, startDate_lesser:$agemore, averageScore_lesser: $score, status:$status, type:$type, sort:SCORE_DESC, countryOfOrigin:JP) {
+                    id
+                    coverImage{
+                        extraLarge
+                    }
+                    title {
+                        romaji
+                    }
+                    status
+                }
+            }
+        }
+        `;
+        let variables = {
+            page : 1,
+            perPage: 100,
+            genre: genre,
+            ageless: `${decade}0000`,
+            agemore: `${parseInt(decade)+10}0000`,
+            score: avgScore,
+            status: status.toUpperCase(),
+            type: type.toUpperCase(),
+        };
+
+        let url = 'https://graphql.anilist.co',
+        options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query,
+                variables: variables
+            })
+        };
+
+        await fetch(url, options).then(handleResponse)
+                        .then(handleData)
+                        .catch(handleError);
+    }
+
+    function handleResponse(response) {
+        return response.json().then(async function (json) {
+            return response.ok ? json : Promise.reject(json);
+        });
+    }
+
+    function handleData(data) {
+        let resultados
+        Object.entries(data).forEach(([label,values])=>{
+            resultados = values.Page.media;
+            if(resultados.length !== 0){
+                setDataReceived(resultados)
+            } else {
+                setDataReceived(undefined)
+            }
+        })
+    }
+
+    function handleError(error) {
+        setDataReceived(undefined)
+        console.error(error);
+    }
+
+    useEffect(() =>{
+        fetchData(valuesIndex["genero"],valuesIndex["decada"], valuesIndex["notamedia"],valuesIndex["estado"],valuesIndex["tipo"]);
+    }, [valuesIndex]);
+    
+    if(dataReceived){
+        indexOfLastPost = currentPage * postPerPage;
+        indexOfFirstPost = indexOfLastPost - postPerPage;
+        currentPosts = dataReceived.slice(indexOfFirstPost, indexOfLastPost);
+    }
+
+    /**
+     * @description Función de la que haremos uso cuando querramos indicar en que página de la paginación estamos
+     * @name paginate
+     * @function
+     * @param {number} pageNumber Numero que indicara en que página queremos estar
+     */
+    function paginate(pageNumber){
+        setCurrentPage(pageNumber)
+    }
+
+    return (
+        &lt;>
+            &lt;Helmet>
+                &lt;title>AMR - Resultados de busqueda&lt;/title>
+            &lt;/Helmet>
+            &lt;Header 
+                titulo="Busqueda"
+            />
+            &lt;main className="contenedorCentro">
+            &lt;article className="centro">
+                &lt;form className="centro__busqueda busqueda__inicio" onSubmit={handleSearch} ref={formRef} >
+                    &lt;section className="dropdowns">
+                        {
+                            Object.entries(listaOpciones).map((value,key) => 
+                                &lt;Dropdown
+                                    key = {key} 
+                                    info={accents.remove(value[0].trim().toLowerCase().split(" ").join(""))}
+                                    label={value[0]}
+                                    opciones = {value[1]}
+                                />
+                                )
+                        }
+                    &lt;/section>
+                    &lt;section className="button">
+                        &lt;button  className="centro__inputBusqueda" onClick={handleSearch}>Buscar&lt;/button>
+                    &lt;/section>
+                &lt;/form>
+            &lt;/article>
+            {
+                dataReceived ?
+                &lt;>
+                    &lt;article className="resultados">
+                    {
+                        Object.entries(currentPosts).map((value, key) =>
+                            &lt;ResultBox 
+                                key = {key}
+                                id = {value[1]["id"]}
+                                titulo = {value[1]["title"]["romaji"]}
+                                imagen = {value[1]["coverImage"]["extraLarge"]}
+                                statusM = {value[1]["status"]}
+                            />
+                        )
+                    }
+                    &lt;/article>
+                    &lt;Pagination 
+                            postPerPage={postPerPage}
+                            totalPosts={dataReceived.length}
+                            paginate={paginate}
+                        />
+                &lt;/>
+                :
+                &lt;article className="apiFailed">
+                    &lt;p>¡Disculpa!&lt;br>&lt;/br>Lo que buscabas no pudo ser encontrado&lt;/p>
+                    &lt;img src={require("../../assets/images/search.gif")} alt="Personaje anime femenino con dudas">&lt;/img>
+                &lt;/article>
+            }
+        &lt;/main>
+        &lt;/>
+    )
+}
+export default Results;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Component%255BLayout%255D_Header.html">Component[Layout]_Header</a></li><li><a href="module-Component%255BLayout%255D_Menu.html">Component[Layout]_Menu</a></li><li><a href="module-Component%255BUnit%255D_BotonRedSocial.html">Component[Unit]_BotonRedSocial</a></li><li><a href="module-Component%255BUnit%255D_Dropdown.html">Component[Unit]_Dropdown</a></li><li><a href="module-Component%255BUnit%255D_Genres.html">Component[Unit]_Genres</a></li><li><a href="module-Component%255BUnit%255D_Pagination.html">Component[Unit]_Pagination</a></li><li><a href="module-Component%255BUnit%255D_ResultBox.html">Component[Unit]_ResultBox</a></li><li><a href="module-Component%255BUnit%255D_Smiley.html">Component[Unit]_Smiley</a></li><li><a href="module-Component%255BUnit%255D_Status.html">Component[Unit]_Status</a></li><li><a href="module-Component%255BView%255D_404.html">Component[View]_404</a></li><li><a href="module-Component%255BView%255D_Contact.html">Component[View]_Contact</a></li><li><a href="module-Component%255BView%255D_Index.html">Component[View]_Index</a></li><li><a href="module-Component%255BView%255D_Login.html">Component[View]_Login</a></li><li><a href="module-Component%255BView%255D_Register.html">Component[View]_Register</a></li><li><a href="module-Component%255BView%255D_SavedList.html">Component[View]_SavedList</a></li><li><a href="module-Component%255BView%255D_UserProfile.html">Component[View]_UserProfile</a></li><li><a href="module-Functions_Validations.html">Functions_Validations</a></li></ul><h3>Global</h3><ul><li><a href="global.html#paginate">paginate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Tue Jan 17 2023 14:18:32 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,3 +1,12 @@
+/**
+ * @file login.jsx - Componente formulario login
+ * @author José Luis Tocino Rojo
+ */
+
+/**
+ * @module Component[View]_Login
+ */
+
 import React, { useState } from "react";
 import { validateEmail } from "../../functions/formValidations";
 import Header from '../layout/header';
@@ -5,28 +14,59 @@ import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import RrssButton from "../botonRedSocial";
 
+/**
+ * Componente que se encarga de mostrar y administrar las validaciones del formulario de login
+ * <br>
+ * <br>
+ * <b><u>FUNCIONES INTERNAS</u></b>
+ * <br>
+ * - <b>handleFormChange</b>
+ * - <b>handleSubmit</b>
+ * 
+ * @memberof module:Component[View]_Login
+ * @returns {JSX.Element} Devuelve el contenido de la página de login
+ */
 function Login() {
+    // Hook de Router usado para redirigir a otro componente
     const navigate = useNavigate();
+    // Estado para el input de email y una contraseña para probar validación
     const [emailForm, setEmailForm] = useState("");
     const password = "Pestillo.123"
 
+    /**
+     * @description Función llamada cada vez que se produzca un cambio en el input de email
+     * para poder mostrar en pantalla si se ha escrito un email correcto
+     * @name handleFormChange
+     * @function 
+     * @param {event} e El evento que recoge el cambio en el input de email
+     */
     const handleFormChange = (e) => {
         e.preventDefault();
+        // Recogemos el valor
         let {name, value} = e.target;      
 
+        // Se valida y se setea el mensaje
         let validEmail = validateEmail(value)
                 validEmail === true
                     ? setEmailForm("")
                     : setEmailForm("Email vacio o no válido")
     }
 
+     /**
+     * @description Función que es llamada al utilizar el submit que se encarga de realizar una ultima
+     * validación de los datos de login 
+     * @name handleSubmit
+     * @function 
+     * @param {event} e El evento que recoge los valores del formulario
+     */
     const handleSubmit = (e) => {
         e.preventDefault();
         let contactValid = false;
+        // Se recogen datos del formulario
         const formData = new FormData(e.target);
         const formObject = Object.fromEntries(formData.entries());
+        // Se comprueba la validación
         if(validateEmail(formObject["email"]) && formObject["contraseña"] === password){
-            console.log("validado")
             contactValid = true;
         }
         if(contactValid){

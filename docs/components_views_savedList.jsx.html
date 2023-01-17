@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/views/savedList.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/views/savedList.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file savedList.jsx - Listado de guardados
+ * @author José Luis Tocino Rojo
+ */
+
+/**
+ * @module Component[View]_SavedList
+ */
+
+import React, {useEffect, useState} from "react";
+import Header from '../layout/header';
+import ResultBox from "../resultBox";
+import { Helmet } from "react-helmet";
+
+/**
+ * Componente que se encarga de renderizar la lista de productos guardados por el usuario
+ * &lt;br>
+ * &lt;br>
+ * &lt;b>&lt;u>FUNCIONES INTERNAS&lt;/u>&lt;/b>
+ * &lt;br>
+ * - &lt;b>fetchData&lt;/b>
+ * - &lt;b>handleResponse&lt;/b>
+ * - &lt;b>handleData&lt;/b>
+ * - &lt;b>handleError&lt;/b>
+ * 
+ * @memberof module:Component[View]_SavedList
+ * @returns {JSX.Element} Contenido HTML referente a la página de listado de guardados
+ */
+function SavedList() {
+    // Estado y setter de los datos recibidos por la api
+    const [dataReceived, setDataReceived] = useState([]);
+    // Estado y setter de la variable que controla la carga de la página
+    const [isLoaded, setLoaded] = useState(false);
+
+    /**
+     * @description Función que es llamada para controlar la recolección de los datos de la api, la cual
+     * crea la query, opciones y url para luego hacer las pertinentes llamadas a la api y funciones necesaria
+     * para formatear la respuesta
+     * @name fetchData
+     * @async
+     * @function 
+     * @param {Array.&lt;string>} idList Lista de ids de las series guardadas por el usuario
+     */
+    async function fetchData(idList){
+        // Query que debe generarse para la petición a la API
+        let query = `
+        query ($page: Int, $perPage: Int, $idList: [Int]) {
+            Page (page: $page, perPage: $perPage) {
+                pageInfo {
+                    total
+                    currentPage
+                    lastPage
+                    hasNextPage
+                    perPage
+                }
+                media (id_in: $idList) {
+                    id
+                    coverImage{
+                        extraLarge
+                    }
+                    title {
+                        romaji
+                    }
+                    status
+                }
+            }
+        }
+        `;
+
+        // Variables que nos ayuda a añadir los elementos de busqueda que necesitemos en la query
+        let variables = {
+            page: 1,
+            perPage: 10,
+            idList: idList
+        };
+
+        // url de la api junto a las opciones de petición a la que se le añade variables y query
+        let url = 'https://graphql.anilist.co',
+        options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query,
+                variables: variables
+            })
+        };
+
+        // Se realiza la llamada y se procesa la respuesta
+        await fetch(url, options).then(handleResponse)
+                        .then(handleData)
+                        .catch(handleError);
+    }
+
+    /**
+     * @description Función que es llamada tras realizar la petición a la API y se encarga de procesar
+     * la respuesta que recibamos
+     * @name handleResponse
+     * @function 
+     * @param {Object} response Respuesta de la api con la información deseada
+     */
+    function handleResponse(response) {
+        return response.json().then(function (json) {
+            return response.ok ? json : Promise.reject(json);
+        });
+    }
+
+    /**
+     * @description Función que es llamada tras procesar la respuesta de la API y nos ayuda a extraer la
+     * información que necesitamos para nuestra aplicación
+     * @name handleData
+     * @function 
+     * @param {Object} data Respuesta procesada de la API
+     */
+    function handleData(data) {
+        let resultados;
+        Object.entries(data).forEach(([label,values])=>{
+            resultados = values.Page.media;
+            setDataReceived(resultados);
+        })
+    }
+
+    /**
+     * @description Función que es llamada en caso de ocurrir algún error durante la comunicación con la API
+     * y nos ayuda a entender cual ha sido el problema
+     * @name handleError
+     * @function 
+     * @param {Object} error Mensaje de error
+     */
+    function handleError(error) {
+        setDataReceived(undefined)
+        console.error(error);
+    }
+
+    // Cuando se carga la página se revisa que haya en localStorage datos sobre los productos guardados
+    useEffect(() =>{
+        if(localStorage.getItem("mediaSaved") === "" || localStorage.getItem("mediaSaved") === null){
+            setDataReceived([]);
+        } else {
+            let savedList = localStorage.getItem("mediaSaved").split(",");
+            fetchData(savedList)
+        }
+    }, []);
+
+    // Cuando se setea la variable de datos recibidos por la api, se deja cargar el return del componente
+    useEffect(() => {
+        setLoaded(true);
+    }, [dataReceived])
+
+    if(isLoaded){
+        return (
+            &lt;>
+                &lt;Helmet>
+                    &lt;title>AMR - Tu lista de guardados&lt;/title>
+                &lt;/Helmet>
+                &lt;Header 
+                    titulo="Tu lista de guardados"
+                />
+                &lt;main className="contenedorCentro">
+                    &lt;article className="resultados">
+                        {
+                            // En caso de haber recubido datos se muestran
+                            dataReceived.length > 0 ?
+                            Object.entries(dataReceived).map((value, key) =>
+                                &lt;ResultBox 
+                                    key = {key}
+                                    id = {value[1]["id"]}
+                                    titulo = {value[1]["title"]["romaji"]}
+                                    imagen = {value[1]["coverImage"]["extraLarge"]}
+                                    status = {value[1]["status"]}
+                                />
+                            )
+                            :
+                            // En caso de no recibir nada se muestra un mensaje
+                            &lt;article className="apiFailed">
+                                &lt;p>Si no tienes nada guardado...&lt;br>&lt;/br>¡No tienes nada que ver aquí!&lt;/p>
+                                &lt;img src={require("../../assets/images/saved.gif")} alt="Personaje anime femenino dando golpes">&lt;/img>
+                            &lt;/article>
+                        }
+                    &lt;/article>
+                &lt;/main>
+            &lt;/>
+        )
+    }
+}
+export default SavedList;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Component%255BLayout%255D_Header.html">Component[Layout]_Header</a></li><li><a href="module-Component%255BLayout%255D_Menu.html">Component[Layout]_Menu</a></li><li><a href="module-Component%255BUnit%255D_BotonRedSocial.html">Component[Unit]_BotonRedSocial</a></li><li><a href="module-Component%255BUnit%255D_Dropdown.html">Component[Unit]_Dropdown</a></li><li><a href="module-Component%255BUnit%255D_Genres.html">Component[Unit]_Genres</a></li><li><a href="module-Component%255BUnit%255D_Pagination.html">Component[Unit]_Pagination</a></li><li><a href="module-Component%255BUnit%255D_ResultBox.html">Component[Unit]_ResultBox</a></li><li><a href="module-Component%255BUnit%255D_Smiley.html">Component[Unit]_Smiley</a></li><li><a href="module-Component%255BUnit%255D_Status.html">Component[Unit]_Status</a></li><li><a href="module-Component%255BView%255D_404.html">Component[View]_404</a></li><li><a href="module-Component%255BView%255D_Contact.html">Component[View]_Contact</a></li><li><a href="module-Component%255BView%255D_Index.html">Component[View]_Index</a></li><li><a href="module-Component%255BView%255D_Login.html">Component[View]_Login</a></li><li><a href="module-Component%255BView%255D_Register.html">Component[View]_Register</a></li><li><a href="module-Component%255BView%255D_SavedList.html">Component[View]_SavedList</a></li><li><a href="module-Component%255BView%255D_UserProfile.html">Component[View]_UserProfile</a></li><li><a href="module-Functions_Validations.html">Functions_Validations</a></li></ul><h3>Global</h3><ul><li><a href="global.html#paginate">paginate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Tue Jan 17 2023 14:18:32 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

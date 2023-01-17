@@ -1,7 +1,22 @@
+/**
+ * @file 404.jsx - Componente error página no encontrada
+ * @author José Luis Tocino Rojo
+ */
+
+/**
+ * @module Component[View]_404
+ */
+
 import React from 'react';
 import Header from '../layout/header';
 import { Helmet } from "react-helmet";
 
+/**
+ * Componente encargado de renderizar la página que se muestra al no encontrar la página que se estaba buscando
+ * 
+ * @memberof module:Component[View]_404
+ * @returns {JSX.Element} Devuelve el contenido de la página de Error 404
+ */
 function Error404() {
   return (
     <>

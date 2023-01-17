@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: views/index.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: views/index.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file index.jsx - Inicio
+ * @author José Luis Tocino Rojo
+ */
+
+import React, {useRef} from "react";
+import Header from '../layout/header';
+import Dropdown from "../dropdown";
+import { Helmet } from "react-helmet";
+import { useNavigate } from "react-router-dom";
+
+/**
+ * Componente que se encarga de renderizar el index de la página web encargada de dar la bienvenida y de ser la puerta de entrada a poder
+ * utilizar el buscador.
+ * &lt;br>
+ * &lt;br>
+ * &lt;b>&lt;u>FUNCIONES INTERNAS&lt;/u>&lt;/b>
+ * &lt;br>
+ * - &lt;b>handleForm&lt;/b> -> Función llamada al realizar submit en el formulario, recibe el evento y de ese recoge los datos de los desplegables y los manda a la página de listado
+ * 
+ * @returns {JSX.Element}
+ */
+function Index() {
+    // Pertenece a una libreria que nos ayuda a eliminar acentos
+    let accents = require('remove-accents');
+    // Hook que nos ayudará a manejar los datos del formulario
+    const formRef = useRef();
+    // Hook que nos ayudará a enviar los datos del formulario a la página de resultados
+    const navigate = useNavigate();
+    
+    // Las siguientes variables contienen los datos referentes a los name y value de los desplegables que se crean más abajo
+    // Se reune todo en una lista conjunta para una mayor facilidad a la hora de iterar
+    const opcionesGenero = {action: 'Acción', adventure:'Aventura', comedy:'Comedia', drama:'Drama', fantasy:'Fantasia'};
+    const opcionesDecada = {2020:'2020s', 2010:'2010s', 2000:'2000s', 1990:'90s', 1980:'80s', 1970:'70s'};
+    const opcionesMedia = {100: 'Sin límite', 90:'90% o menos', 80:'80% o menos', 70:'70% o menos', 60:'60% o menos', 50:'50% o menos', 40:'40% o menos'};
+    const opcionesEstado = {releasing:'En publicación', finished:'Finalizado'};
+    const opcionesTipo = {anime:'Anime', manga:'Manga'}
+    const listaOpciones = {"Género":opcionesGenero, "Década":opcionesDecada, "Nota Media":opcionesMedia, "Estado":opcionesEstado, "Tipo":opcionesTipo}
+
+    /**
+     * @description Función llamada al realizar submit en el formulario, recibe el evento y 
+     * de ese recoge los datos de los desplegables y los manda a la página de listado
+     * @name handleForm
+     * @function 
+     * @param {event} event El evento que recoge la información del formulario
+     */
+    const handleForm = (event) => {
+        event.preventDefault();
+        const formData = new FormData(formRef.current);
+        const values = Object.fromEntries(formData)
+        console.log(values);
+        navigate('/results',{state:values});
+    }
+    
+    return (
+        &lt;>
+            &lt;Helmet>
+                &lt;title>AMR - Inicio&lt;/title>
+            &lt;/Helmet>
+            &lt;Header 
+                titulo="¿Que deseas descubrir hoy?"
+            />
+            &lt;main className="contenedorCentro">
+            &lt;article className="centro">
+                &lt;h2 className="centro__frase">Descubre tu nuevo anime o manga favorito gracias a AMR.&lt;/h2>
+                &lt;form className="centro__busqueda busqueda__inicio" onSubmit={handleForm} ref={formRef}>
+                    &lt;section className="dropdowns">
+                        {
+                            // Recorre el objeto con objetos de las opciones para crear los desplegables
+                            Object.entries(listaOpciones).map((value,key) => 
+                                &lt;Dropdown
+                                    key = {key} 
+                                    info={accents.remove(value[0].trim().toLowerCase().split(" ").join(""))}
+                                    label={value[0]}
+                                    opciones = {value[1]}
+                                />
+                                )
+                        }
+                    &lt;/section>
+                    &lt;section className="button">
+                        &lt;button onClick={handleForm} className="centro__inputBusqueda">Buscar&lt;/button>
+                    &lt;/section>
+                &lt;/form>
+            &lt;/article>
+        &lt;/main>
+        &lt;/>
+    )
+}
+export default Index;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Dropdown">Dropdown</a></li><li><a href="global.html#Genres">Genres</a></li><li><a href="global.html#Header">Header</a></li><li><a href="global.html#Index">Index</a></li><li><a href="global.html#Menu">Menu</a></li><li><a href="global.html#Pagination">Pagination</a></li><li><a href="global.html#ResultBox">ResultBox</a></li><li><a href="global.html#Results">Results</a></li><li><a href="global.html#RrssButton">RrssButton</a></li><li><a href="global.html#Smiley">Smiley</a></li><li><a href="global.html#Status">Status</a></li><li><a href="global.html#activateRotation">activateRotation</a></li><li><a href="global.html#handleForm">handleForm</a></li><li><a href="global.html#paginate">paginate</a></li><li><a href="global.html#rotateLogo">rotateLogo</a></li><li><a href="global.html#toggleOverlay">toggleOverlay</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Tue Jan 17 2023 04:39:54 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/views/index.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/views/index.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file index.jsx - Inicio
+ * @author José Luis Tocino Rojo
+ */
+
+/**
+ * @module Component[View]_Index
+ */
+
+import React, {useRef} from "react";
+import Header from '../layout/header';
+import Dropdown from "../dropdown";
+import { Helmet } from "react-helmet";
+import { useNavigate } from "react-router-dom";
+
+/**
+ * Componente que se encarga de renderizar el index de la página web encargada de dar la bienvenida y de ser la puerta de entrada a poder
+ * utilizar el buscador.
+ * &lt;br>
+ * &lt;br>
+ * &lt;b>&lt;u>FUNCIONES INTERNAS&lt;/u>&lt;/b>
+ * &lt;br>
+ * - &lt;b>handleForm&lt;/b>
+ * 
+ * @memberof module:Component[View]_Index
+ * @returns {JSX.Element} Contenido HTML referente a la página de inicio del proyecto
+ */
+function Index() {
+    // Pertenece a una libreria que nos ayuda a eliminar acentos
+    let accents = require('remove-accents');
+    // Hook que nos ayudará a manejar los datos del formulario
+    const formRef = useRef();
+    // Hook que nos ayudará a enviar los datos del formulario a la página de resultados
+    const navigate = useNavigate();
+    
+    // Las siguientes variables contienen los datos referentes a los name y value de los desplegables que se crean más abajo
+    // Se reune todo en una lista conjunta para una mayor facilidad a la hora de iterar
+    const opcionesGenero = {action: 'Acción', adventure:'Aventura', comedy:'Comedia', drama:'Drama', fantasy:'Fantasia'};
+    const opcionesDecada = {2020:'2020s', 2010:'2010s', 2000:'2000s', 1990:'90s', 1980:'80s', 1970:'70s'};
+    const opcionesMedia = {100: 'Sin límite', 90:'90% o menos', 80:'80% o menos', 70:'70% o menos', 60:'60% o menos', 50:'50% o menos', 40:'40% o menos'};
+    const opcionesEstado = {releasing:'En publicación', finished:'Finalizado'};
+    const opcionesTipo = {anime:'Anime', manga:'Manga'}
+    const listaOpciones = {"Género":opcionesGenero, "Década":opcionesDecada, "Nota Media":opcionesMedia, "Estado":opcionesEstado, "Tipo":opcionesTipo}
+
+    /**
+     * @description Función llamada al realizar submit en el formulario, recibe el evento y 
+     * de ese recoge los datos de los desplegables y los manda a la página de listado
+     * @name handleForm
+     * @function 
+     * @param {event} event El evento que recoge la información del formulario
+     */
+    const handleForm = (event) => {
+        event.preventDefault();
+        const formData = new FormData(formRef.current);
+        const values = Object.fromEntries(formData)
+        navigate('/results',{state:values});
+    }
+    
+    return (
+        &lt;>
+            &lt;Helmet>
+                &lt;title>AMR - Inicio&lt;/title>
+            &lt;/Helmet>
+            &lt;Header 
+                titulo="¿Que deseas descubrir hoy?"
+            />
+            &lt;main className="contenedorCentro">
+            &lt;article className="centro">
+                &lt;h2 className="centro__frase">Descubre tu nuevo anime o manga favorito gracias a AMR.&lt;/h2>
+                &lt;form className="centro__busqueda busqueda__inicio" onSubmit={handleForm} ref={formRef}>
+                    &lt;section className="dropdowns">
+                        {
+                            // Recorre el objeto con objetos de las opciones para crear los desplegables
+                            Object.entries(listaOpciones).map((value,key) => 
+                                &lt;Dropdown
+                                    key = {key} 
+                                    info={accents.remove(value[0].trim().toLowerCase().split(" ").join(""))}
+                                    label={value[0]}
+                                    opciones = {value[1]}
+                                />
+                                )
+                        }
+                    &lt;/section>
+                    &lt;section className="button">
+                        &lt;button onClick={handleForm} className="centro__inputBusqueda">Buscar&lt;/button>
+                    &lt;/section>
+                &lt;/form>
+            &lt;/article>
+        &lt;/main>
+        &lt;/>
+    )
+}
+export default Index;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Component%255BLayout%255D_Header.html">Component[Layout]_Header</a></li><li><a href="module-Component%255BLayout%255D_Menu.html">Component[Layout]_Menu</a></li><li><a href="module-Component%255BUnit%255D_BotonRedSocial.html">Component[Unit]_BotonRedSocial</a></li><li><a href="module-Component%255BUnit%255D_Dropdown.html">Component[Unit]_Dropdown</a></li><li><a href="module-Component%255BUnit%255D_Genres.html">Component[Unit]_Genres</a></li><li><a href="module-Component%255BUnit%255D_Pagination.html">Component[Unit]_Pagination</a></li><li><a href="module-Component%255BUnit%255D_ResultBox.html">Component[Unit]_ResultBox</a></li><li><a href="module-Component%255BUnit%255D_Smiley.html">Component[Unit]_Smiley</a></li><li><a href="module-Component%255BUnit%255D_Status.html">Component[Unit]_Status</a></li><li><a href="module-Component%255BView%255D_404.html">Component[View]_404</a></li><li><a href="module-Component%255BView%255D_Contact.html">Component[View]_Contact</a></li><li><a href="module-Component%255BView%255D_Index.html">Component[View]_Index</a></li><li><a href="module-Component%255BView%255D_Login.html">Component[View]_Login</a></li><li><a href="module-Component%255BView%255D_Register.html">Component[View]_Register</a></li><li><a href="module-Component%255BView%255D_SavedList.html">Component[View]_SavedList</a></li><li><a href="module-Component%255BView%255D_UserProfile.html">Component[View]_UserProfile</a></li><li><a href="module-Functions_Validations.html">Functions_Validations</a></li></ul><h3>Global</h3><ul><li><a href="global.html#paginate">paginate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Tue Jan 17 2023 14:18:32 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/views/userProfile.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/views/userProfile.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file userProfile.jsx - Componente que muestra el perfil de usuario
+ * @author José Luis Tocino Rojo
+ */
+
+/**
+ * @module Component[View]_UserProfile
+ */
+
+import React, { useEffect, useState } from "react";
+import Header from '../layout/header';
+import { Helmet } from "react-helmet";
+
+/**
+ * Componente usado para mostrar la información de perfil del usuario
+ * 
+ * @memberof module:Component[View]_UserProfile
+ * @returns {JSX.Element} Contenido HTML referente al contenido de la página de perfil de usuario
+ */
+function UserProfile() {
+    // Estado usado para conocer la cantidad de productos guardados en localStorage
+    const [savedMedia, setSavedMedia] = useState(0)
+    // Estado usado para indicar que se tienen todos los datos necesarios para cargar
+    const [isLoaded, setLoaded] = useState(false)
+
+    // Se activa al cargar el componente, recoge la cantidad de productos guardados si los hay
+    // en localStorage y setea el estado correspondiente
+    useEffect(() => {
+        if(localStorage.getItem("mediaSaved") !== null){
+            setSavedMedia(localStorage.getItem("mediaSaved").split(",").length)
+        }
+    }, [])
+
+    // Cuando el estado de productos guardados es seteado se indica que puede cargar el componente
+    useEffect(() => {
+        setLoaded(true)
+    }, [savedMedia])
+
+    if(isLoaded){
+        return (
+            &lt;>
+                &lt;Helmet>
+                    &lt;title>AMR - Perfil de {localStorage.getItem("user") ? localStorage.getItem("user") : "NOUSER"}&lt;/title>
+                &lt;/Helmet>
+                &lt;Header 
+                    titulo="Perfil de usuario"
+                />
+                &lt;main className="contenedorCentro">
+                    &lt;article className="contenedorPerfil">
+                        &lt;section className="contenedorPerfil__infoUsuario">
+                            &lt;img src={require("../../assets/images/pfp.jpg")} alt="Foto de perfil" className="contenedorPerfil__infoUsuario--foto"/>
+                            &lt;p className="contenedorPerfil__infoUsuario--nombreUsuario">{localStorage.getItem("user") ? localStorage.getItem("user") : "NOUSER"}&lt;/p>
+                            &lt;div className="contenedorPerfil__infoUsuario--guardadas">
+                                &lt;p className="contenedorPerfil__infoUsuario--guardadas--titulo">Series guardadas&lt;/p>
+                                &lt;p className="contenedorPerfil__infoUsuario--guardadas--numero">{savedMedia}&lt;/p>
+                            &lt;/div>
+                        &lt;/section>
+                        &lt;span className="contenedorPerfil__lineaVertical">&lt;/span>
+                        &lt;section className="contenedorPerfil__modificarDatos">
+                            &lt;form className="contenedorPerfil__modificarDatos__formulario">
+                                &lt;label className="contenedorPerfil__modificarDatos__formulario--label" htmlFor="usuario" >Usuario&lt;/label>
+                                &lt;input className="contenedorPerfil__modificarDatos__formulario--input" type="text" name="usuario" id="usuario" value={localStorage.getItem("user") ? localStorage.getItem("user") : "NOUSER"} disabled="true"/>
+                                &lt;label className="contenedorPerfil__modificarDatos__formulario--label" htmlFor="email" >E-mail&lt;/label>
+                                &lt;input className="contenedorPerfil__modificarDatos__formulario--input" type="email" name="email" id="email" value={localStorage.getItem("email") ? localStorage.getItem("email") : "NOEMAIL"} disabled="true"/>
+                                &lt;label className="contenedorPerfil__modificarDatos__formulario--label" htmlFor="pass" >Contraseña&lt;/label>
+                                &lt;input className="contenedorPerfil__modificarDatos__formulario--input" type="password" name="pass" id="pass" value={localStorage.getItem("pass") ? localStorage.getItem("pass") : ""} disabled="true"/>
+                                &lt;label className="contenedorPerfil__modificarDatos__formulario--label" htmlFor="pronombre" >Pronombre&lt;/label>
+                                &lt;input className="contenedorPerfil__modificarDatos__formulario--input" type="text" name="pronombre" id="pronombre" value={localStorage.getItem("pronoun") ? localStorage.getItem("pronoun") : "NOPRONOUN"} disabled="true"/>
+                            &lt;/form>
+                        &lt;/section>
+                    &lt;/article>
+                &lt;/main>
+            &lt;/>
+        )
+    }
+}
+export default UserProfile;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Component%255BLayout%255D_Header.html">Component[Layout]_Header</a></li><li><a href="module-Component%255BLayout%255D_Menu.html">Component[Layout]_Menu</a></li><li><a href="module-Component%255BUnit%255D_BotonRedSocial.html">Component[Unit]_BotonRedSocial</a></li><li><a href="module-Component%255BUnit%255D_Dropdown.html">Component[Unit]_Dropdown</a></li><li><a href="module-Component%255BUnit%255D_Genres.html">Component[Unit]_Genres</a></li><li><a href="module-Component%255BUnit%255D_Pagination.html">Component[Unit]_Pagination</a></li><li><a href="module-Component%255BUnit%255D_ResultBox.html">Component[Unit]_ResultBox</a></li><li><a href="module-Component%255BUnit%255D_Smiley.html">Component[Unit]_Smiley</a></li><li><a href="module-Component%255BUnit%255D_Status.html">Component[Unit]_Status</a></li><li><a href="module-Component%255BView%255D_404.html">Component[View]_404</a></li><li><a href="module-Component%255BView%255D_Contact.html">Component[View]_Contact</a></li><li><a href="module-Component%255BView%255D_Index.html">Component[View]_Index</a></li><li><a href="module-Component%255BView%255D_Login.html">Component[View]_Login</a></li><li><a href="module-Component%255BView%255D_Register.html">Component[View]_Register</a></li><li><a href="module-Component%255BView%255D_SavedList.html">Component[View]_SavedList</a></li><li><a href="module-Component%255BView%255D_UserProfile.html">Component[View]_UserProfile</a></li><li><a href="module-Functions_Validations.html">Functions_Validations</a></li></ul><h3>Global</h3><ul><li><a href="global.html#paginate">paginate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Tue Jan 17 2023 14:18:32 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

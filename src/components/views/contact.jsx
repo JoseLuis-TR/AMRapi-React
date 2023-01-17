@@ -1,20 +1,52 @@
+/**
+ * @file contact.jsx - Componente formulario contacto
+ * @author José Luis Tocino Rojo
+ */
+
+/**
+ * @module Component[View]_Contact
+ */
+
 import React, { useState } from "react";
 import { validateEmail, validateName, validateContactForm } from "../../functions/formValidations";
 import Header from '../layout/header';
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 
+/**
+ * Componente que se encarga de mostrar y administrar las validaciones del formulario de contacto
+ * <br>
+ * <br>
+ * <b><u>FUNCIONES INTERNAS</u></b>
+ * <br>
+ * - <b>handleFormChange</b>
+ * - <b>handleSubmit</b>
+ * 
+ * @memberof module:Component[View]_Contact
+ * @returns {JSX.Element} Devuelve el contenido de la página de contacto
+ */
 function Contact() {
+    // Hook de Router usado para redirigir a otro componente
     const navigate = useNavigate();
+    // Estados y setters de los inputs del formulario
     const [nameForm, setnameForm] = useState("");
     const [emailForm, setEmailForm] = useState("");
     const [asuntoForm, setAsuntoForm] = useState("");
     const [textForm, setTextForm] = useState("");
 
+    /**
+     * @description Función llamada cada vez que se produzca un cambio en alguno de los inputs del
+     * formulario para validar el contenido
+     * @name handleFormChange
+     * @function 
+     * @param {event} e El evento que recoge el cambio en el input del formulario
+     */
     const handleFormChange = (e) => {
         e.preventDefault();
+        // Se recoge nombre de input y su valor
         let {name, value} = e.target;      
 
+        // Si no se valida se muestra mensaje en pantalla
         switch (name) {
             case "nombre":
                 if(!validateName(value)){
@@ -45,9 +77,17 @@ function Contact() {
         }
     }
 
+    /**
+     * @description Función que es llamada al utilizar el submit que se encarga de realizar una ultima
+     * validación de los datos del formulario 
+     * @name handleSubmit
+     * @function 
+     * @param {event} e El evento que recoge los valores del formulario
+     */
     const handleSubmit = (e) => {
         e.preventDefault();
         let contactValid = false;
+        // Se recogen datos y nombre de los inputs del formulario
         const formData = new FormData(e.target);
         const formObject = Object.fromEntries(formData.entries());
         for(const key in formObject){

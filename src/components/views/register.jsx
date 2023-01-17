@@ -1,3 +1,12 @@
+/**
+ * @file register.jsx - Componente formulario registro
+ * @author José Luis Tocino Rojo
+ */
+
+/**
+ * @module Component[View]_Register
+ */
+
 import React, { useState } from "react";
 import { validateEmail, validateUser, validateBirtDate, validatePassword, validateSamePass } from "../../functions/formValidations";
 import Header from '../layout/header';
@@ -5,8 +14,22 @@ import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import RrssButton from "../botonRedSocial";
 
+/**
+ * Componente que se encarga de mostrar y administrar las validaciones del formulario de registro
+ * <br>
+ * <br>
+ * <b><u>FUNCIONES INTERNAS</u></b>
+ * <br>
+ * - <b>handleFormChange</b>
+ * - <b>handleSubmit</b>
+ * 
+ * @memberof module:Component[View]_Register
+ * @returns {JSX.Element} Devuelve el contenido de la página de registro
+ */
 function Register() {
+    // Hook de Router usado para redirigir a otro componente
     const navigate = useNavigate();
+    // Estado y setters de los inputs del formulario
     const [userForm, setuserForm] = useState("");
     const [emailForm, setEmailForm] = useState("");
     const [dateBirth, setDateBirth] = useState("");
@@ -14,12 +37,19 @@ function Register() {
     const [passwordForm, setPassword] = useState("");
     const [checkPass, setCheckPass] = useState("");
 
+    /**
+     * @description Función llamada cada vez que se produzca un cambio en alguno de los inputs
+     * del formulario para validarlos y mostrar en pantalla en caso de error
+     * @name handleFormChange
+     * @function 
+     * @param {event} e El evento que recoge el cambio en los inputs del formulario
+     */
     const handleFormChange = (e) => {
         e.preventDefault();
+        // Recogemos nombre y valor del input
         let {name, value} = e.target;
-        console.log(name)
-        console.log(value)
 
+        // Se valida y se setea el mensaje de error
         switch (name) {
             case "usuario":
                 if(!validateUser(value)){
@@ -53,8 +83,6 @@ function Register() {
                 break;
 
             case "repetirContra":
-                console.log(value)
-                console.log(savedPassword)
                 validateSamePass(value,savedPassword)
                     ? setCheckPass("")
                     : setCheckPass("Debes repetir la contraseña anterior")
@@ -62,12 +90,20 @@ function Register() {
         }
     }
 
+    /**
+     * @description Función que es llamada al utilizar el submit que se encarga de realizar una ultima
+     * validación de los datos de registro
+     * @name handleSubmit
+     * @function 
+     * @param {event} e El evento que recoge los valores del formulario
+     */
     const handleSubmit = (e) => {
         e.preventDefault();
         let registerValid = false;
+        // Se recogen los datos del formulario
         const formData = new FormData(e.target);
         const formObject = Object.fromEntries(formData.entries());
-        console.log(formObject)
+        // Se busca validar todos los inputs
         if(validateUser(formObject["usuario"]) &&
             validateEmail(formObject["email"]) &&
             validateBirtDate(formObject["birthDate"]) &&
@@ -78,6 +114,7 @@ function Register() {
                 registerValid = true
         }
 
+        // SI es valido se guardan los datos al localStorage y se vuelve al inicio
         if(registerValid){
             alert("Usuario creado correctamente");
             localStorage.setItem("user", formObject["usuario"]);

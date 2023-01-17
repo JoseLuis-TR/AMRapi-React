@@ -1,3 +1,20 @@
+/**
+ * @file menu.jsx - Componente menu navegación
+ * @author José Luis Tocino Rojo
+ */
+
+/**
+ * @module Component[Layout]_Menu
+ */
+
+/**
+ * Componente que es usado como menu de navegación de la web
+ * 
+ * @memberof module:Component[Layout]_Menu
+ * @param {boolean} showMenu Booleano que indica si se debe mostrar o no el menu
+ * @param {toggleOverlay} toggleOverlay Función que, en este componente nos ayuda a esconderlo
+ * @returns {JSX.Element} Contenido HTML referente al menu de navegación
+ */
 function Menu({showMenu, toggleOverlay}) {
     return (
         <nav className={showMenu ? "menu mostrar" : "menu"} id="menu__opciones">

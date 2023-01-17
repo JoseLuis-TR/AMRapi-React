@@ -1,11 +1,11 @@
 import React, {useEffect, useState, useRef} from "react";
-import ReactPaginate from "react-paginate";
 import Pagination from "../pagination";
 import Header from '../layout/header';
 import Dropdown from "../dropdown";
 import ResultBox from "../resultBox";
 import { Helmet } from "react-helmet";
 import { useLocation } from "react-router-dom";
+
 
 function Results() {
     let accents = require('remove-accents');
@@ -23,7 +23,7 @@ function Results() {
     const listaOpciones = {"Género":opcionesGenero, "Década":opcionesDecada, "Nota Media":opcionesMedia, "Estado":opcionesEstado, "Tipo":opcionesTipo};
     const [dataReceived, setDataReceived] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [postPerPage, setPostPerPage] = useState(6);
+    const [postPerPage] = useState(6);
 
 
     const handleSearch = (event) => {
@@ -33,7 +33,6 @@ function Results() {
         let optionsToStorage = `${valuesSearch["genero"]},${valuesSearch["decada"]}, ${valuesSearch["notamedia"]},${valuesSearch["estado"]},${valuesSearch["tipo"]}`;
         optionsToStorage.replace(/\\/g, '')
         localStorage.setItem("searchResult",`${valuesSearch["genero"]},${valuesSearch["decada"]}, ${valuesSearch["notamedia"]},${valuesSearch["estado"]},${valuesSearch["tipo"]}`)
-        console.log(valuesSearch["genero"]);
         fetchData(valuesSearch["genero"],valuesSearch["decada"],valuesSearch["notamedia"],valuesSearch["estado"],valuesSearch["tipo"])
     }
 
@@ -62,7 +61,7 @@ function Results() {
         `;
         let variables = {
             page : 1,
-            perPage: 60,
+            perPage: 100,
             genre: genre,
             ageless: `${decade}0000`,
             agemore: `${parseInt(decade)+10}0000`,
@@ -70,8 +69,6 @@ function Results() {
             status: status.toUpperCase(),
             type: type.toUpperCase(),
         };
-
-        console.log(variables)
 
         let url = 'https://graphql.anilist.co',
         options = {
@@ -101,7 +98,6 @@ function Results() {
         let resultados
         Object.entries(data).forEach(([label,values])=>{
             resultados = values.Page.media;
-            console.log(values.Page.media.slice(1,3))
             if(resultados.length !== 0){
                 setDataReceived(resultados)
             } else {
@@ -115,13 +111,8 @@ function Results() {
         console.error(error);
     }
 
-    function handlePagination(){
-        console.log(dataReceived)
-    }
-
     useEffect(() =>{
         fetchData(valuesIndex["genero"],valuesIndex["decada"], valuesIndex["notamedia"],valuesIndex["estado"],valuesIndex["tipo"]);
-        handlePagination()
     }, [valuesIndex]);
     
     if(dataReceived){
@@ -130,6 +121,12 @@ function Results() {
         currentPosts = dataReceived.slice(indexOfFirstPost, indexOfLastPost);
     }
 
+    /**
+     * @description Función de la que haremos uso cuando querramos indicar en que página de la paginación estamos
+     * @name paginate
+     * @function
+     * @param {number} pageNumber Numero que indicara en que página queremos estar
+     */
     function paginate(pageNumber){
         setCurrentPage(pageNumber)
     }
@@ -144,7 +141,7 @@ function Results() {
             />
             <main className="contenedorCentro">
             <article className="centro">
-                <form className="centro__busqueda busqueda__inicio" onSubmit={handleSearch} ref={formRef}>
+                <form className="centro__busqueda busqueda__inicio" onSubmit={handleSearch} ref={formRef} >
                     <section className="dropdowns">
                         {
                             Object.entries(listaOpciones).map((value,key) => 
@@ -173,7 +170,7 @@ function Results() {
                                 id = {value[1]["id"]}
                                 titulo = {value[1]["title"]["romaji"]}
                                 imagen = {value[1]["coverImage"]["extraLarge"]}
-                                status = {value[1]["status"]}
+                                statusM = {value[1]["status"]}
                             />
                         )
                     }
@@ -187,7 +184,7 @@ function Results() {
                 :
                 <article className="apiFailed">
                     <p>¡Disculpa!<br></br>Lo que buscabas no pudo ser encontrado</p>
-                    <img src={require("../../assets/images/search.gif")}></img>
+                    <img src={require("../../assets/images/search.gif")} alt="Personaje anime femenino con dudas"></img>
                 </article>
             }
         </main>

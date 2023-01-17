@@ -1,20 +1,38 @@
+/**
+ * @file userProfile.jsx - Componente que muestra el perfil de usuario
+ * @author José Luis Tocino Rojo
+ */
+
+/**
+ * @module Component[View]_UserProfile
+ */
+
 import React, { useEffect, useState } from "react";
 import Header from '../layout/header';
 import { Helmet } from "react-helmet";
 
+/**
+ * Componente usado para mostrar la información de perfil del usuario
+ * 
+ * @memberof module:Component[View]_UserProfile
+ * @returns {JSX.Element} Contenido HTML referente al contenido de la página de perfil de usuario
+ */
 function UserProfile() {
+    // Estado usado para conocer la cantidad de productos guardados en localStorage
     const [savedMedia, setSavedMedia] = useState(0)
+    // Estado usado para indicar que se tienen todos los datos necesarios para cargar
     const [isLoaded, setLoaded] = useState(false)
 
+    // Se activa al cargar el componente, recoge la cantidad de productos guardados si los hay
+    // en localStorage y setea el estado correspondiente
     useEffect(() => {
         if(localStorage.getItem("mediaSaved") !== null){
             setSavedMedia(localStorage.getItem("mediaSaved").split(",").length)
-            console.log(savedMedia)
         }
     }, [])
 
+    // Cuando el estado de productos guardados es seteado se indica que puede cargar el componente
     useEffect(() => {
-        console.log(savedMedia)
         setLoaded(true)
     }, [savedMedia])
 
